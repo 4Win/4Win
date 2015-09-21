@@ -3,6 +3,7 @@
 	<name>4Win</name>
 	<comment></comment>
 	<projects>
+		<project>app</project>
 	</projects>
 	<buildSpec>
 	</buildSpec>
