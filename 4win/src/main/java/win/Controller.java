@@ -259,7 +259,7 @@ public class Controller {
 	}
 
 	@FXML
-	protected void CheckStartPopup() {
+	protected void CheckStartPopup() throws SAXException, InterruptedException {
 		if (rb3.isSelected() == false && rb4.isSelected() == false) {
 			System.out.println("Bitte erst einen Spieler auswählen");
 		} else {
@@ -282,7 +282,7 @@ public class Controller {
 	}
 
 	@FXML
-	protected void Start(int mode) {
+	protected void Start(int mode) throws SAXException, InterruptedException {
 		// Mode 1 = Push
 		// Mode 2 = File
 		// Mode 3 = Load

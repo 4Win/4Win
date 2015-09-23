@@ -305,7 +305,7 @@ public class Controller {
 			if(mode == 2)
 			{
 				FileCom fc= new FileCom(path, player);
-				fc.start();
+				fc.start(path);
 			}
 			if(mode == 3)
 			{

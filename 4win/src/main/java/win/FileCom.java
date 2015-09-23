@@ -18,16 +18,21 @@ public class FileCom {
 
 	FileWriter writer;
 	File file;
-
+	String path;
 	public FileCom(String path, String player) {
 		System.out.println("Erfolgreich FileCommunicator erstellt");
 		System.out.println("Du bist: " + player);
 		System.out.println("Die Datei liegt da: " + path);
+		path = path;
 	}
 	
-	public void start()
+	public void start() throws SAXException, IOException, InterruptedException
 	{
-		
+		if(lesen(path) == 1)
+		{
+			System.out.println("keine Serverdatei gefunden - warten");
+//			wait(1000);
+		}
 	}
 
 	public void schreiben(String zahl, String path, String player) {
@@ -52,7 +57,7 @@ public class FileCom {
 		}
 	}
 
-	public void lesen(String path) throws SAXException, IOException {
+	public int lesen(String path) throws SAXException, IOException {
 		// Überprüfen ob Datei vorhanden ist
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
 				.newInstance();
@@ -67,7 +72,7 @@ public class FileCom {
 			boolean exist = new File(path + "/Serverfile.xml").exists();
 			if (exist == false) {
 				System.out.println("Serverdatei existiert nicht!!!");
-				return;
+				return 1;
 			}
 			if (exist == true) {
 				file = new File(path + "/Serverfile.xml");
@@ -105,6 +110,7 @@ public class FileCom {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return 2;
 
 	}
 }
