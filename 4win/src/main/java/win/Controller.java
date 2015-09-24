@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -31,6 +32,7 @@ public class Controller {
 	String opponent;
 	String path;
 	String player;
+	Double time;
 
 	@FXML
 	Label name2;
@@ -81,6 +83,9 @@ public class Controller {
 	TextField tf1;
 
 	@FXML
+	TextField tf2;
+
+	@FXML
 	Pane p2;
 
 	@FXML
@@ -100,6 +105,9 @@ public class Controller {
 
 	@FXML
 	Button b7;
+
+	@FXML
+	Slider sl1;
 
 	@FXML
 	protected void StartPop() {
@@ -294,24 +302,20 @@ public class Controller {
 		try {
 			p2 = (Pane) FXMLLoader.load(getClass().getResource("Field.fxml"));
 			Label dlabel = (Label) p2.lookup("#name2");
-			if (dlabel != null) 
-			{
+			if (dlabel != null) {
 				dlabel.setText(opponent);
 			}
-			if(mode == 1)
-			{
-				
+			if (mode == 1) {
+
 			}
-			if(mode == 2)
-			{
-				FileCom fc= new FileCom(path, player);
+			if (mode == 2) {
+				FileCom fc = new FileCom(path, player, time);
 				fc.start();
 			}
-			if(mode == 3)
-			{
+			if (mode == 3) {
 				buildFromArray(a);
 			}
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -350,6 +354,13 @@ public class Controller {
 		File file = dc.showDialog(null);
 		path = file.getPath();
 		pathlb.setText(path);
+	}
+
+	@FXML
+	protected void SetProcess() {
+		System.out.println("Set Process");
+		tf2.setText(Double.toString(sl1.getValue()));
+		time = sl1.getValue();
 	}
 
 }

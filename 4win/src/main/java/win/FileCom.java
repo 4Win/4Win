@@ -3,6 +3,7 @@ package win;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,23 +20,60 @@ public class FileCom {
 	FileWriter writer;
 	File file;
 	String path;
-	public FileCom(String path, String player) {
+	String player;
+	String freigabe;
+	String sieger;
+	String satzstatus;
+	String gegnerzug;
+
+	public FileCom(String paths, String players, Double time) {
 		System.out.println("Erfolgreich FileCommunicator erstellt");
-		System.out.println("Du bist: " + player);
-		System.out.println("Die Datei liegt da: " + path);
-		path = path;
+		System.out.println("Du bist: " + players);
+		System.out.println("Die Datei liegt da: " + paths);
+		path = paths;
+		player = players;
 	}
-	
-	public void start() throws SAXException, IOException, InterruptedException
-	{
-		if(lesen(path) == 1)
-		{
-			System.out.println("keine Serverdatei gefunden - warten");
-//			wait(1000);
+
+	public void start() throws SAXException, IOException, InterruptedException {
+		if (lesen() == 1) {
+			System.out.println("keine Serverdatei gefunden - 2sec Wartezeit...");
+			Thread.sleep(10000);
+			start();
+		} else {
+			löschen();
+
+			// KI k = new KI();
+			// k.einlesen(spalte, player);
+			// int neuespalte = k.intelligence();
+			// schreiben(neueSpalte);
+			// k.einlesen(neueSpalte, );
+			// Serverdatei prüfen
+			if (freigabe == "false") {
+				System.out.println("Freigabe gesperrt");
+				return;
+			} else {
+
+				// KI + Spielzug
+				Random rnd = new Random();
+				int zahl = rnd.nextInt(5) + 1;
+				// spielen
+				schreiben(Integer.toString(zahl));
+				Thread.sleep(10000);
+				start();
+			}
 		}
 	}
 
-	public void schreiben(String zahl, String path, String player) {
+	public void löschen() {
+		file = new File(path + "/" + player + "2server.txt");
+		file.delete();
+		System.out.println("Datei wurde gelöscht: " + file.getPath());
+	}
+
+	public void schreiben(String zahl) throws IOException {
+		file = new File(path + "/" + player + "2server.txt");
+		System.out.println("Neue Agentendatei wird erstellt: " + file.getPath()
+				+ " Spalte: " + zahl);
 		file = new File(path + "/" + player + "2server.txt");
 		if (!file.exists()) {
 			try {
@@ -43,8 +81,12 @@ public class FileCom {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("test");
 			}
+		}
+		if (file.exists()) {
+			file.delete();
+			file = new File(path + "/" + player + "2server.txt");
+			file.createNewFile();
 		}
 		try {
 			writer = new FileWriter(file, true);
@@ -57,7 +99,11 @@ public class FileCom {
 		}
 	}
 
-	public int lesen(String path) throws SAXException, IOException {
+	public int lesen() throws SAXException, IOException {
+		String serverfilename = "\\server2" + player + ".xml";
+		System.out.println("Die Datei soll gelesen werden: " + path + "/"
+				+ serverfilename);
+
 		// Überprüfen ob Datei vorhanden ist
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
 				.newInstance();
@@ -69,14 +115,16 @@ public class FileCom {
 		File file = null;
 		try {
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			boolean exist = new File(path + "/Serverfile.xml").exists();
+			boolean exist = new File(path + "/" + serverfilename).exists();
+			System.out.println("Serverdatei suchen: " + path + "/"
+					+ serverfilename);
 			if (exist == false) {
 				System.out.println("Serverdatei existiert nicht!!!");
 				return 1;
 			}
 			if (exist == true) {
-				file = new File(path + "/Serverfile.xml");
-				System.out.println("File: " + file);
+				System.out.println("Serverdatei wurde gefunden!");
+				file = new File(path + "/" + serverfilename);
 				Document doc = documentBuilder.parse(file);
 				NodeList contentlist1 = doc.getElementsByTagName("freigabe");
 				NodeList contentlist2 = doc.getElementsByTagName("satzstatus");
@@ -86,24 +134,30 @@ public class FileCom {
 				Node c = contentlist1.item(0);
 				if (c.getNodeType() == Node.ELEMENT_NODE) {
 					content = (Element) c;
-					System.out.println(content.getTextContent());
+					System.out.println("Freigabe: " + content.getTextContent());
+					freigabe = content.getTextContent();
 				}
 
 				Node d = contentlist2.item(0);
 				if (d.getNodeType() == Node.ELEMENT_NODE) {
 					content = (Element) d;
-					System.out.println(content.getTextContent());
+					System.out.println("Satzstatus: "
+							+ content.getTextContent());
+					satzstatus = content.getTextContent();
 				}
 
 				Node e = contentlist3.item(0);
 				if (e.getNodeType() == Node.ELEMENT_NODE) {
 					content = (Element) e;
-					System.out.println(content.getTextContent());
+					System.out
+							.println("Gegnerzug: " + content.getTextContent());
+					gegnerzug = content.getTextContent();
 				}
 				Node f = contentlist4.item(0);
 				if (f.getNodeType() == Node.ELEMENT_NODE) {
 					content = (Element) f;
-					System.out.println(content.getTextContent());
+					System.out.println("Sieger: " + content.getTextContent());
+					sieger = content.getTextContent();
 				}
 			}
 		} catch (ParserConfigurationException e) {
