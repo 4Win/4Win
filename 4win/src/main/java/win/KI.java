@@ -1,3 +1,5 @@
+package win;
+
 import java.util.Random;
 
 public class KI {
