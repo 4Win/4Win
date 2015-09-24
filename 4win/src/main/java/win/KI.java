@@ -8,10 +8,10 @@ public class KI {
 	int HOEHE = 6;
 	int BREITE = 7;
 
-	// werden übergeben aus ServerCom
+	// werden ï¿½bergeben aus ServerCom
 	public static void main(String[] args) {
 
-		KICon ki = new KICon();
+		KI ki = new KI();
 		ki.einlesen(0, 1);
 		ki.einlesen(0, 1);
 		ki.einlesen(1, 1);
