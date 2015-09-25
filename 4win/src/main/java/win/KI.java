@@ -1,25 +1,24 @@
+package win;
+
+
 import java.util.Random;
 
 public class KI {
 
 	int[][] feld = new int[6][7];
-	private static final int MAXCONST = 1;
-	private static final int MINCONST = -1;
-	int HOEHE = 6;
-	int BREITE = 7;
 
-	// werden �bergeben aus ServerCom
+	//KI Objekt kann einlesen aufrufen 
+	//bekommt als Eingabe Spalte und Name des Spielers aus der Serverdatei 
 	public static void main(String[] args) {
 
 		KI ki = new KI();
-		ki.einlesen(0, 1);
-		ki.einlesen(0, 1);
-		ki.einlesen(1, 1);
-		System.out.println(ki.berechnen());
+		ki.einlesen(ki.berechnen(), 1);
+	
 	}
 
-	// Methode die Spalte und
-
+	// Methode die Zeile aus Spalte errechnet 
+	// geht Array durch und findet erste Zeile  die in Spalte noch nicht befüllt ist 
+	//schreibt die Spielernummer an der Stelle in den Array 
 	public void einlesen(int spalte, int player) {
 		int zeile = 0;
 		for (int x = 5; x >= 0; x--) {
@@ -30,16 +29,29 @@ public class KI {
 				return;
 			}
 		}
-
 	}
 
+	// Diese Methode berechnet die Entscheidung der KI 
+	// geht Spalten und Zeilen durch und sucht dich erstes freies Feld 
+	// schreibt die SpaltenNummer in Spalte und wirft diese zurück
 	public int berechnen() {
 		
-		Random random = new Random(); 
-		int zufall = random.nextInt(6); 
-		einlesen(zufall,1); 
-		return zufall; 
+		int spalte = 1; 
 		
+		for(int y=0; y<=6; y++)
+		{
+			for (int x = 5; x >= 0; x--) {
+				
+				if(feld[x][y] == 0)
+				{
+					 spalte = y; 
+					 System.out.println(spalte);
+					 return spalte;  
+				}
+			 ;}
+			}
+		 
+		// Dann neue Zufallszahl 
+		return 1;
 	}
-
 }
