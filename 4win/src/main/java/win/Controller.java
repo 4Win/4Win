@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -33,12 +34,17 @@ public class Controller {
 	String path;
 	String player;
 	Double time;
+	int satz;
+	int game;
 
 	@FXML
 	Label name2;
 
 	@FXML
 	Button win1;
+	
+	@FXML
+	TableColumn loadtable;
 
 	@FXML
 	Label pic11;
@@ -130,8 +136,7 @@ public class Controller {
 		stage = (Stage) b2.getScene().getWindow();
 
 		try {
-			p2 = (Pane) FXMLLoader.load(getClass()
-					.getResource("LoadPopup.fxml"));
+			p2 = (Pane) FXMLLoader.load(getClass().getResource("LoadPopup.fxml"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -309,6 +314,9 @@ public class Controller {
 
 			}
 			if (mode == 2) {
+				Scene scene2 = new Scene(p2);
+				stage.setScene(scene2);
+				stage.show();
 				FileCom fc = new FileCom(path, player, time);
 				fc.start();
 			}
@@ -320,9 +328,7 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Scene scene2 = new Scene(p2);
-		stage.setScene(scene2);
-		stage.show();
+
 	}
 
 	@FXML
@@ -359,8 +365,13 @@ public class Controller {
 	@FXML
 	protected void SetProcess() {
 		System.out.println("Set Process");
-		tf2.setText(Double.toString(sl1.getValue()));
-		time = sl1.getValue();
+		tf2.setText(Integer.toString((int)sl1.getValue()));
+	}
+	
+	@FXML
+	protected void LoadGames()
+	{
+		
 	}
 
 }

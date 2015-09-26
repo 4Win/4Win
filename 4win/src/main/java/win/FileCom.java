@@ -24,7 +24,8 @@ public class FileCom {
 	String freigabe;
 	String sieger;
 	String satzstatus;
-	String gegnerzug;
+	int gegnerzug;
+	KI k;
 
 	public FileCom(String paths, String players, Double time) {
 		System.out.println("Erfolgreich FileCommunicator erstellt");
@@ -32,49 +33,47 @@ public class FileCom {
 		System.out.println("Die Datei liegt da: " + paths);
 		path = paths;
 		player = players;
+		k = new KI();
 	}
 
 	public void start() throws SAXException, IOException, InterruptedException {
 		if (lesen() == 1) {
-			System.out.println("keine Serverdatei gefunden - 2sec Wartezeit...");
-			Thread.sleep(10000);
+			Thread.sleep(500);
 			start();
 		} else {
-			löschen();
-
-			// KI k = new KI();
-			// k.einlesen(spalte, player);
-			// int neuespalte = k.intelligence();
-			// schreiben(neueSpalte);
-			// k.einlesen(neueSpalte, );
-			// Serverdatei prüfen
-			if (freigabe == "false") {
+			if (freigabe.equals("false")) {
 				System.out.println("Freigabe gesperrt");
 				return;
 			} else {
-
-				// KI + Spielzug
-				Random rnd = new Random();
-				int zahl = rnd.nextInt(5) + 1;
-				// spielen
-				schreiben(Integer.toString(zahl));
-				Thread.sleep(10000);
+				agentenlöschen(); // Agentendateilöschen
+				// // spielen
+				k.einlesen(gegnerzug, 2);
+				serverlöschen();
+				schreiben(k.berechnen());
+				Thread.sleep(500);
 				start();
 			}
 		}
 	}
 
-	public void löschen() {
-		file = new File(path + "/" + player + "2server.txt");
+	public void agentenlöschen() {
+		file = new File(path + "/" +"\\"+ player + "2server.txt");
 		file.delete();
-		System.out.println("Datei wurde gelöscht: " + file.getPath());
+		System.out.println("Agentendatei von " + player + " wurde gelöscht: "
+				+ file.getPath());
 	}
 
-	public void schreiben(String zahl) throws IOException {
-		file = new File(path + "/" + player + "2server.txt");
+	public void serverlöschen() {
+		file = new File(path + "/" + "\\server2" + player + ".xml");
+		file.delete();
+		System.out.println("Serverdatei von " + player
+				+ " wurde gelöscht: " + file.getPath());
+	}
+
+	public void schreiben(int zahl) throws IOException {
+		file = new File(path + "/" + "\\"+ player + "2server.txt");
 		System.out.println("Neue Agentendatei wird erstellt: " + file.getPath()
-				+ " Spalte: " + zahl);
-		file = new File(path + "/" + player + "2server.txt");
+				+ " Wert: " + zahl);
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -83,14 +82,9 @@ public class FileCom {
 				e.printStackTrace();
 			}
 		}
-		if (file.exists()) {
-			file.delete();
-			file = new File(path + "/" + player + "2server.txt");
-			file.createNewFile();
-		}
 		try {
 			writer = new FileWriter(file, true);
-			writer.write(zahl);
+			writer.write(Integer.toString(zahl));
 			writer.flush();
 			writer.close();
 
@@ -151,7 +145,8 @@ public class FileCom {
 					content = (Element) e;
 					System.out
 							.println("Gegnerzug: " + content.getTextContent());
-					gegnerzug = content.getTextContent();
+					String gegnerzug2 = content.getTextContent();
+					gegnerzug = Integer.parseInt(gegnerzug2);
 				}
 				Node f = contentlist4.item(0);
 				if (f.getNodeType() == Node.ELEMENT_NODE) {
@@ -159,12 +154,16 @@ public class FileCom {
 					System.out.println("Sieger: " + content.getTextContent());
 					sieger = content.getTextContent();
 				}
+				return 2;
 			}
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} 
+		
+		catch (ParserConfigurationException e) {
+			return 1;
 		}
 		return 2;
 
 	}
+	
+	
 }
