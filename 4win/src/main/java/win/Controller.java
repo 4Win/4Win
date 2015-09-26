@@ -45,6 +45,9 @@ public class Controller {
 	
 	@FXML
 	TableColumn loadtable;
+	
+	@FXML
+	Label res;
 
 	@FXML
 	Label pic11;
@@ -318,7 +321,23 @@ public class Controller {
 				stage.setScene(scene2);
 				stage.show();
 				FileCom fc = new FileCom(path, player, time);
-				fc.start();
+				int erg = fc.start();
+				switch (erg) {
+				case 1:
+					Label dlabel2 = (Label) p2.lookup("#res");
+					Image img = new Image("./pictures/cup.png");
+					ImageView imv = new ImageView(img);
+					dlabel2.setGraphic(imv);
+
+				case 2:
+					Label dlabel3 = (Label) p2.lookup("#res");
+					Image img2 = new Image("./pictures/goat.png");
+					ImageView imv2 = new ImageView(img2);
+					dlabel3.setGraphic(imv2);
+					
+				case 3:
+					System.out.println("RandomCase");
+				}
 			}
 			if (mode == 3) {
 				buildFromArray(a);

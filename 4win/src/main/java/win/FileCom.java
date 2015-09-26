@@ -36,28 +36,51 @@ public class FileCom {
 		k = new KI();
 	}
 
-	public void start() throws SAXException, IOException, InterruptedException {
+	public int start() throws SAXException, IOException, InterruptedException {
+		int res = 0;
 		if (lesen() == 1) {
 			Thread.sleep(500);
 			start();
 		} else {
-			if (freigabe.equals("false")) {
+			if (freigabe.equals("false")) 
+			{
 				System.out.println("Freigabe gesperrt");
-				return;
-			} else {
-				agentenlöschen(); // Agentendateilöschen
-				// // spielen
-				k.einlesen(gegnerzug, 2);
-				serverlöschen();
-				schreiben(k.berechnen());
-				Thread.sleep(500);
-				start();
+				System.out.println("Sieger: " + sieger);
+				char tempsieger = sieger.toLowerCase().charAt(8);
+				char tempplayer = player.charAt(7);
+				if (tempplayer == tempsieger) {
+					System.out.println("YOU WIN!!!");
+					res = 1;
+				} else {
+					System.out.println("YOU LOSE!!!");
+					res = 2;
+				}
+			} 
+			else {
+				if (gegnerzug == -1) {
+					agentenlöschen(); // Agentendateilöschen
+					serverlöschen();
+					schreiben(k.berechnen());
+					Thread.sleep(500);
+					start();
+				} else {
+					agentenlöschen(); // Agentendateilöschen
+					// // spielen
+					k.einlesen(gegnerzug, 2);
+					serverlöschen();
+					schreiben(k.berechnen());
+					Thread.sleep(500);
+					start();
+				}
+
 			}
 		}
+		System.out.println("Ergebnis: " + res);
+		return res;
 	}
 
 	public void agentenlöschen() {
-		file = new File(path + "/" +"\\"+ player + "2server.txt");
+		file = new File(path + "/" + "\\" + player + "2server.txt");
 		file.delete();
 		System.out.println("Agentendatei von " + player + " wurde gelöscht: "
 				+ file.getPath());
@@ -66,12 +89,12 @@ public class FileCom {
 	public void serverlöschen() {
 		file = new File(path + "/" + "\\server2" + player + ".xml");
 		file.delete();
-		System.out.println("Serverdatei von " + player
-				+ " wurde gelöscht: " + file.getPath());
+		System.out.println("Serverdatei von " + player + " wurde gelöscht: "
+				+ file.getPath());
 	}
 
 	public void schreiben(int zahl) throws IOException {
-		file = new File(path + "/" + "\\"+ player + "2server.txt");
+		file = new File(path + "/" + "\\" + player + "2server.txt");
 		System.out.println("Neue Agentendatei wird erstellt: " + file.getPath()
 				+ " Wert: " + zahl);
 		if (!file.exists()) {
@@ -156,14 +179,13 @@ public class FileCom {
 				}
 				return 2;
 			}
-		} 
-		
+		}
+
 		catch (ParserConfigurationException e) {
 			return 1;
 		}
 		return 2;
 
 	}
-	
-	
+
 }
