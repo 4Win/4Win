@@ -52,5 +52,19 @@ public class KI {
 		 
 		// Dann neue Zufallszahl 
 		return 1;
+		
+		
+		//1. Zug in die Mitte werfen 
+		//Kann ich gewinnen?  
+		// max. 7 Möglichkeiten 
+		// 1. überprüfen 
+		// 3 nach rechts 
+		// 3 nach links 
+		// 3 nach unten 
+		// Wenn eine der Möglichkeiten da ist dann 1 in das Feld ansosnten 0 
+		// Sind alle 7 bewertet wird das mit 1 ausgeführt 
+		// Ansonsten Zufall
+		// Gibts mehrere mit ner 1 auch Zufall 
+		
 	}
 }
