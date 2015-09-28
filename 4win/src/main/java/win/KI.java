@@ -8,6 +8,16 @@ public class KI {
 	int HOEHE = 6;
 	int BREITE = 7;
 
+	// werden �bergeben aus ServerCom
+	public static void main(String[] args) {
+
+		KI ki = new KI();
+		ki.einlesen(0, 1);
+		ki.einlesen(0, 1);
+		ki.einlesen(1, 1);
+		System.out.println(ki.berechnen());
+	}
+
 	// Methode die Spalte und
 
 	public void einlesen(int spalte, int player) {

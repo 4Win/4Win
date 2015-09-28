@@ -415,53 +415,51 @@ public class Controller {
 		tf2.setText(Integer.toString((int) sl1.getValue()));
 	}
 
-	@FXML
-	protected void LoadGames() throws SQLException, IOException {
-		System.out.println("Load Games");
-		database.Database db = new Database();
-
-		ResultSet rs = db.getSpiele();
-		// System.out.println(rs);
-		for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-			// We are using non property style for making dynamic table
-			final int j = i;
-			TableColumn col = new TableColumn(rs.getMetaData().getColumnName(
-					i + 1));
-			col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(j)
-							.toString());
-				}
-			});
-			p2 = (Pane) FXMLLoader.load(getClass()
-					.getResource("LoadPopup.fxml"));
-			TableView tableview = (TableView) p2.lookup("#tableview");
-			tableview.getColumns().addAll(col);
-			System.out.println("Column [" + i + "] ");
-		}
-
-		/********************************
-		 * Data added to ObservableList *
-		 ********************************/
-		while (rs.next()) {
-			// Iterate Row
-			ObservableList<String> row = FXCollections.observableArrayList();
-			for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-				// Iterate Column
-				row.add(rs.getString(i));
-			}
-			System.out.println("Row [1] added " + row);
-			data.add(row);
-
-		}
-
-		// FINALLY ADDED TO TableView
-		tableview.setItems(data);
-		Scene scene = new Scene(p2);
-		stage.setScene(scene);
-		stage.show();
-
-	}
+//	@FXML
+//	protected void LoadGames() throws SQLException, IOException {
+//		System.out.println("Load Games");
+//		database.Database db = new Database();
+//
+////		ResultSet rs = db.getSpiele();
+//		// System.out.println(rs);
+//		for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+//			// We are using non property style for making dynamic table
+//			final int j = i;
+//			TableColumn col = new TableColumn(rs.getMetaData().getColumnName(
+//					i + 1));
+//			col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+//				public ObservableValue<String> call(
+//						CellDataFeatures<ObservableList, String> param) {
+//					return new SimpleStringProperty(param.getValue().get(j)
+//							.toString());
+//				}
+//			});
+//			p2 = (Pane) FXMLLoader.load(getClass()
+//					.getResource("LoadPopup.fxml"));
+//			TableView tableview = (TableView) p2.lookup("#tableview");
+//			tableview.getColumns().addAll(col);
+//			System.out.println("Column [" + i + "] ");
+//			System.out.println(tableview.getColumns().get(0));
+//		}
+//
+//		/********************************
+//		 * Data added to ObservableList *
+//		 ********************************/
+//		while (rs.next()) {
+//			// Iterate Row
+//			ObservableList<String> row = FXCollections.observableArrayList();
+//			for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+//				// Iterate Column
+//				row.add(rs.getString(i));
+//			}
+//			System.out.println("Row [1] added " + row);
+//			data.add(row);
+//
+//		}
+//
+//		// FINALLY ADDED TO TableView
+//		tableview.setItems(data);
+//
+//	}
 
 }
