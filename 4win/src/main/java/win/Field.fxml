@@ -12,7 +12,7 @@
   <children>
     <ImageView fitHeight="401.6999999171776" fitWidth="599.55224609375" layoutX="-1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
       <image>
-        <Image url="file:/Users/dwome/Documents/workspace/4win/src/main/java/pictures/fussballplatz.jpg" />
+        <Image url="pictures/fussballplatz.jpg" />
       </image>
     </ImageView>
     <ImageView fitHeight="412.5" fitWidth="660.0" layoutX="-57.0" layoutY="-61.0" pickOnBounds="true" preserveRatio="true">
