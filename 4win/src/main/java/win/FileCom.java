@@ -25,6 +25,7 @@ public class FileCom {
 	String sieger;
 	String satzstatus;
 	int gegnerzug;
+	int help = 0;
 	KI k;
 
 	public FileCom(String paths, String players, Double time) {
@@ -36,46 +37,98 @@ public class FileCom {
 		k = new KI();
 	}
 
-	public int start() throws SAXException, IOException, InterruptedException {
-		int res = 0;
-		if (lesen() == 1) {
-			Thread.sleep(500);
-			start();
-		} else {
-			if (freigabe.equals("false")) 
-			{
-				System.out.println("Freigabe gesperrt");
-				System.out.println("Sieger: " + sieger);
-				char tempsieger = sieger.toLowerCase().charAt(8);
-				char tempplayer = player.charAt(7);
-				if (tempplayer == tempsieger) {
-					System.out.println("YOU WIN!!!");
-					res = 1;
-				} else {
-					System.out.println("YOU LOSE!!!");
-					res = 2;
-				}
-			} 
-			else {
-				if (gegnerzug == -1) {
-					agentenlöschen(); // Agentendateilöschen
-					serverlöschen();
-					schreiben(k.berechnen());
-					Thread.sleep(500);
-					start();
-				} else {
-					agentenlöschen(); // Agentendateilöschen
-					// // spielen
-					k.einlesen(gegnerzug, 2);
-					serverlöschen();
-					schreiben(k.berechnen());
-					Thread.sleep(500);
-					start();
-				}
+	// public void play() throws SAXException, IOException, InterruptedException
+	// {
+	// int i = start();
+	// System.out.println("Ergebnis: " + i);
+	// }
 
+	// public int start() throws SAXException, IOException, InterruptedException
+	// {
+	// int res = 0;
+	//
+	// if (lesen() == 1) {
+	// Thread.sleep(500);
+	// start();
+	// } else {
+	// if (freigabe.equals("false")) {
+	// System.out.println("Freigabe gesperrt");
+	// System.out.println("Sieger: " + sieger);
+	// char tempsieger = sieger.toLowerCase().charAt(8);
+	// char tempplayer = player.charAt(7);
+	// if (tempplayer == tempsieger) {
+	// System.out.println("YOU WIN!!!");
+	// res = 1;
+	// help = res;
+	// } else {
+	// System.out.println("YOU LOSE!!!");
+	// res = 2;
+	// help = res;
+	// }
+	// } else {
+	// if (gegnerzug == -1) {
+	// agentenlöschen(); // Agentendateilöschen
+	// serverlöschen();
+	// schreiben(k.berechnen());
+	// Thread.sleep(500);
+	// start();
+	// } else {
+	// agentenlöschen(); // Agentendateilöschen
+	// // // spielen
+	// k.einlesen(gegnerzug, 2);
+	// serverlöschen();
+	// schreiben(k.berechnen());
+	// Thread.sleep(500);
+	// start();
+	// }
+	//
+	// }
+	// }
+	// if (res == 0) {
+	// res = help;
+	// }
+	// System.out.println("Ergebnis: " + res);
+	// return res;
+	// }
+
+	public int start2() throws SAXException, IOException, InterruptedException {
+		int res = 0;
+		while (res != 1 || res != 2) {
+			if (lesen() == 1) {
+				Thread.sleep(500);
+			} else {
+				if (freigabe.equals("false")) {
+					System.out.println("Freigabe gesperrt");
+					System.out.println("Sieger: " + sieger);
+					char tempsieger = sieger.toLowerCase().charAt(8);
+					char tempplayer = player.charAt(7);
+					if (tempplayer == tempsieger) {
+						System.out.println("YOU WIN!!!");
+						res = 1;
+						return res;
+					} else {
+						System.out.println("YOU LOSE!!!");
+						res = 2;
+						return res;
+					}
+				} else {
+					if (gegnerzug == -1) {
+						agentenlöschen(); // Agentendateilöschen
+						serverlöschen();
+						schreiben(k.berechnen());
+						Thread.sleep(500);
+					} else {
+						agentenlöschen(); // Agentendateilöschen
+						// // spielen
+						k.einlesen(gegnerzug, 2);
+						serverlöschen();
+						schreiben(k.berechnen());
+						Thread.sleep(500);
+					}
+
+				}
 			}
 		}
-		System.out.println("Ergebnis: " + res);
 		return res;
 	}
 

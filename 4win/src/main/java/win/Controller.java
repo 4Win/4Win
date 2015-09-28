@@ -2,9 +2,12 @@ package win;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.xml.sax.SAXException;
 
+import database.Database;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,11 +17,25 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class Controller {
 
@@ -36,16 +53,20 @@ public class Controller {
 	Double time;
 	int satz;
 	int game;
+	ObservableList<ObservableList> data;
 
 	@FXML
 	Label name2;
 
 	@FXML
 	Button win1;
-	
+
 	@FXML
 	TableColumn loadtable;
-	
+
+	@FXML
+	TableView tableview;
+
 	@FXML
 	Label res;
 
@@ -139,7 +160,8 @@ public class Controller {
 		stage = (Stage) b2.getScene().getWindow();
 
 		try {
-			p2 = (Pane) FXMLLoader.load(getClass().getResource("LoadPopup.fxml"));
+			p2 = (Pane) FXMLLoader.load(getClass()
+					.getResource("LoadPopup.fxml"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -314,29 +336,35 @@ public class Controller {
 				dlabel.setText(opponent);
 			}
 			if (mode == 1) {
-
+				Scene scene2 = new Scene(p2);
+				stage.setScene(scene2);
+				stage.show();
+				PushCom pc = new PushCom(player);
 			}
 			if (mode == 2) {
 				Scene scene2 = new Scene(p2);
 				stage.setScene(scene2);
 				stage.show();
 				FileCom fc = new FileCom(path, player, time);
-				int erg = fc.start();
+				int erg = fc.start2();
 				switch (erg) {
 				case 1:
 					Label dlabel2 = (Label) p2.lookup("#res");
 					Image img = new Image("./pictures/cup.png");
 					ImageView imv = new ImageView(img);
 					dlabel2.setGraphic(imv);
+					break;
 
 				case 2:
 					Label dlabel3 = (Label) p2.lookup("#res");
-					Image img2 = new Image("./pictures/goat.png");
+					Image img2 = new Image("./pictures/goat3.png");
 					ImageView imv2 = new ImageView(img2);
 					dlabel3.setGraphic(imv2);
-					
-				case 3:
+					break;
+
+				case 0:
 					System.out.println("RandomCase");
+					break;
 				}
 			}
 			if (mode == 3) {
@@ -384,13 +412,56 @@ public class Controller {
 	@FXML
 	protected void SetProcess() {
 		System.out.println("Set Process");
-		tf2.setText(Integer.toString((int)sl1.getValue()));
+		tf2.setText(Integer.toString((int) sl1.getValue()));
 	}
-	
+
 	@FXML
-	protected void LoadGames()
-	{
-		
+	protected void LoadGames() throws SQLException, IOException {
+		System.out.println("Load Games");
+		database.Database db = new Database();
+
+		ResultSet rs = db.getSpiele();
+		// System.out.println(rs);
+		for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+			// We are using non property style for making dynamic table
+			final int j = i;
+			TableColumn col = new TableColumn(rs.getMetaData().getColumnName(
+					i + 1));
+			col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+				public ObservableValue<String> call(
+						CellDataFeatures<ObservableList, String> param) {
+					return new SimpleStringProperty(param.getValue().get(j)
+							.toString());
+				}
+			});
+			p2 = (Pane) FXMLLoader.load(getClass()
+					.getResource("LoadPopup.fxml"));
+			TableView tableview = (TableView) p2.lookup("#tableview");
+			tableview.getColumns().addAll(col);
+			System.out.println("Column [" + i + "] ");
+		}
+
+		/********************************
+		 * Data added to ObservableList *
+		 ********************************/
+		while (rs.next()) {
+			// Iterate Row
+			ObservableList<String> row = FXCollections.observableArrayList();
+			for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+				// Iterate Column
+				row.add(rs.getString(i));
+			}
+			System.out.println("Row [1] added " + row);
+			data.add(row);
+
+		}
+
+		// FINALLY ADDED TO TableView
+		tableview.setItems(data);
+		Scene scene = new Scene(p2);
+		stage.setScene(scene);
+		stage.show();
+
 	}
 
 }
