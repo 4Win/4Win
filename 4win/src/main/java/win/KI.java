@@ -2,7 +2,6 @@
 package win;
 import java.util.Random;
 
-import win.VierGewinnt.SpielSituation;
 
 public class KI {
 	
