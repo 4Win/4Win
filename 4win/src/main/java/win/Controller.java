@@ -415,12 +415,12 @@ public class Controller {
 		tf2.setText(Integer.toString((int) sl1.getValue()));
 	}
 
-//	@FXML
-//	protected void LoadGames() throws SQLException, IOException {
-//		System.out.println("Load Games");
+	@FXML
+	protected void LoadGames() throws SQLException, IOException {
+		System.out.println("Load Games");
 //		database.Database db = new Database();
 //
-////		ResultSet rs = db.getSpiele();
+//		ResultSet rs = db.getSpiele();
 //		// System.out.println(rs);
 //		for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
 //			// We are using non property style for making dynamic table
@@ -459,7 +459,7 @@ public class Controller {
 //
 //		// FINALLY ADDED TO TableView
 //		tableview.setItems(data);
-//
-//	}
+
+	}
 
 }
