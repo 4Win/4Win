@@ -34,10 +34,18 @@ public class KI {
 
 		KI ki = new KI();
 		ki.befüllen();
+		 
 		
 		//ki.einlesen(ki.berechnen(), 1);
 	
 	}
+	
+	//Getter / Setter  Methoden
+	public int[][] getFeld() {
+		return this.feld; }
+	public void setFeld(int x, int y, int wert) {
+		this.feld[x][y] = wert; }
+	
 	
 	// Feld aufbauen und befüllen - Start	
 	public void befüllen (){
@@ -54,7 +62,7 @@ public class KI {
 	// Methode die Zeile aus Spalte errechnet 
 	// geht Array durch und findet erste Zeile  die in Spalte noch nicht bef�llt ist 
 	//schreibt die Spielernummer an der Stelle in den Array 
-	public void einlesen(int spalte, int player) {
+	public void zugeinlesen(int spalte, int player) {
 		int zeile = 0;
 		for (int x = 5; x >= 0; x--) {
 			if (feld[x][spalte] == 0) {
@@ -66,31 +74,14 @@ public class KI {
 		}
 	}
 	
-	// Hilfsfunktion zum Erkennen eines 2er-, 3er- oder 4er-Musters
-	// dx und dy geben die Richtung an, in die gesucht wird
-	// (ab der Position (x,y))
-	private static int mustercheck(int [][] feld, int spieler, int x, int y, int dx, int dy) {
-	  int num = 0;
-	  // dx und dy, je nach richtung 0 oder 1 oder -1 
-	  if (  ((feld[x][y]==spieler) || (feld[x][y]==leer))// Überprüfung auf Koordinate
-	     && ((feld[x+1*dx][y+1*dy]== spieler) || (feld[x+1*dx][y+1*dy]==leer)) // Überprüfung auf nächster Koordinate = 2-Muster
-	     && ((feld[x+2*dx][y+2*dy]== spieler) || (feld[x+2*dx][y+2*dy]==leer)) // Überprüfung auf nächster Koordinate = 3 Muster
-	     && ((feld[x+3*dx][y+3*dy]== spieler) || (feld[x+3*dx][y+3*dy]==leer)))
-	  { // überprüfung auf nächster Koordinate = 4 Gewinnt
 
-	    // zaehle Anzahl von spieler belegter Felder
-		  for (int i=0; i<4; i++){ // geht 4 felder durch 
-	    	if (feld[x+i*dx][y+i*dy]==spieler) num++;// wenn feld belegt ist +1 bis max 4
-		  }
-	  }
-	return num;// wenn max 4 automatisch 4 gewinnt
-	} // Ende Hilfsfunktion
 	
-	
-	public int bewerten(){ // bewertet übergebenes feld
-
+	public int bewerten(KI ki){ // bewertet übergebenes feld
+// 
 		 int spieler2er = 0; int gegner2er = 0;
 		 int spieler3er = 0; int gegner3er = 0;
+		 
+		 int[][]feld = ki.getFeld(); // holt sich feld von Objekt
 		  
 	// zuerst nur höhe überprüfen
 		 for (int x=0; x<breite; x++) {
@@ -114,7 +105,60 @@ public class KI {
 			        		}
 			        		else if (mustercheck(feld,gegner,x,y,0,-1)==2){
 			        			gegner2er ++;
-			        		}
+			        	      }
+			            // Noch 4 Chips nach rechts oben moeglich?
+			            if ((hoehe-y>=4) && (breite-x>=4)) {
+			              // 4 gleiche Chips nach rechts oben?
+			              if (mustercheck(feld,spieler,x,y,1,1)==4) 
+			                return muster4Spieler;  // gewonnen
+			              
+			              else if (mustercheck(feld,gegner,x,y,1,1)==4)
+			                return muster4Gegner;  // verloren
+			              // 3 gleiche Chips uebereinander?
+			              else if (mustercheck(feld,spieler,x,y,1,1)==3) 
+			                spieler3er++; 
+			              else if (mustercheck(feld,gegner,x,y,1,1)==3)
+			                gegner3er++;
+			              // 2 gleiche Chips uebereinander?
+			              else if (mustercheck(feld,spieler,x,y,1,1)==2) 
+			                spieler2er++; 
+			              else if (mustercheck(feld,gegner,x,y,1,1)==2)
+			                gegner2er++;
+			            } 
+			            // Noch 4 Chips nach rechts moeglich?
+			            if (breite-x>=4) {
+			              if (mustercheck(feld,spieler,x,y,1,0)==4) 
+			                return muster4Spieler;  // gewonnen
+			              else if (mustercheck(feld,gegner,x,y,1,0)==4)
+			                return muster4Gegner;  // verloren
+			              // 3 gleiche Chips uebereinander?
+			              else if (mustercheck(feld,spieler,x,y,1,0)==3) 
+			                spieler3er++; 
+			              else if (mustercheck(feld,gegner,x,y,1,0)==3)
+			                gegner3er++;
+			              // 2 gleiche Chips uebereinander?
+			              else if (mustercheck(feld,spieler,x,y,1,0)==2) 
+			                spieler2er++; 
+			              else if (mustercheck(feld,gegner,x,y,1,0)==2)
+			                gegner2er++;
+			            }
+			            // Noch 4 Chips nach rechts unten moeglich?
+			            if ((breite-x>=4) && (y>=3)) {
+			               if (mustercheck(feld,spieler,x,y,1,-1)==4) 
+			                return muster4Spieler;  // gewonnen
+			              else if (mustercheck(feld,gegner,x,y,1,-1)==4)
+			                return muster4Gegner;  // verloren
+			              // 3 gleiche Chips uebereinander?
+			              else if (mustercheck(feld,spieler,x,y,1,-1)==3) 
+			                spieler3er++; 
+			              else if (mustercheck(feld,gegner,x,y,1,-1)==3)
+			                gegner3er++;
+			              // 2 gleiche Chips uebereinander?
+			              else if (mustercheck(feld,spieler,x,y,1,-1)==2) 
+			                spieler2er++; 
+			              else if (mustercheck(feld,gegner,x,y,1,-1)==2)
+			                gegner2er++;
+			            } 
 			        		
 			        	}
 			        		
@@ -123,13 +167,33 @@ public class KI {
 		 return muster3spieler*spieler3er + muster2spieler*spieler2er - muster3gegner*gegner3er + muster2gegner*gegner2er;
 	}
 	
-		
+	// Hilfsfunktion zum Erkennen eines 2er-, 3er- oder 4er-Musters
+	// dx und dy geben die Richtung an, in die gesucht wird
+	// (ab der Position (x,y))
+	private static int mustercheck(int [][] feld, int spieler, int x, int y, int dx, int dy) {
+	  int num = 0;
+	  // dx und dy, je nach richtung 0 oder 1 oder -1 
+	  if (  ((feld[x][y]==spieler) || (feld[x][y]==leer)) // Überprüfung auf Koordinate
+	     && ((feld[x+1*dx][y+1*dy]== spieler) || (feld[x+1*dx][y+1*dy]==leer)) // Überprüfung auf nächster Koordinate = 2-Muster
+	     && ((feld[x+2*dx][y+2*dy]== spieler) || (feld[x+2*dx][y+2*dy]==leer)) // Überprüfung auf nächster Koordinate = 3 Muster
+	     && ((feld[x+3*dx][y+3*dy]== spieler) || (feld[x+3*dx][y+3*dy]==leer)))
+	  { // überprüfung auf nächster Koordinate = 4 Gewinnt
+
+	    // zaehle Anzahl von spieler belegter Felder
+		  for (int i=0; i<4; i++){ // geht 4 felder durch 
+	    	if (feld[x+i*dx][y+i*dy]==spieler) num++;// wenn feld belegt ist +1 bis max 4
+		  }
+	  }
+	return num;// wenn max 4 automatisch 4 gewinnt
+	} // Ende Hilfsfunktion
 	
-
-
+	
+	
+	// Mitch - Nimmt erste Spalte- Ziel keine fehler werfen
+	
 	// Diese Methode berechnet die Entscheidung der KI 
 	// geht Spalten und Zeilen durch und sucht dich erstes freies Feld 
-	// schreibt die SpaltenNummer in Spalte und wirft diese zur�ck
+	// schreibt die SpaltenNummer in Spalte und wirft diese zurück
 	public int berechnen() {
 		
 		int spalte = 1; 
@@ -150,6 +214,7 @@ public class KI {
 		// Dann neue Zufallszahl 
 		return 1;
 		
+		//Zug ausführen
 		
 	
 		
