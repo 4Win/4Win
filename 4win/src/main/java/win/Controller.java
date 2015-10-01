@@ -105,7 +105,19 @@ public class Controller {
 
 	@FXML
 	RadioButton rb4;
+	
+	@FXML
+	TableColumn col1;
 
+	@FXML
+	TableColumn col2;
+
+	@FXML
+	TableColumn col3;
+
+	@FXML
+	TableColumn col4;
+	
 	@FXML
 	Label pathlb;
 

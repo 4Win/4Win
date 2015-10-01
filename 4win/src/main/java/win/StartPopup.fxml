@@ -6,31 +6,35 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="397.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="win.Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="542.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="win.Controller">
   <children>
-    <RadioButton fx:id="rb1" layoutX="134.0" layoutY="18.0" mnemonicParsing="false" onAction="#HandleRadio" text="Push">
+    <RadioButton fx:id="rb1" layoutX="125.0" layoutY="18.0" mnemonicParsing="false" onAction="#HandleRadio" text="Push">
       <toggleGroup>
         <ToggleGroup fx:id="rb" />
       </toggleGroup>
     </RadioButton>
     <RadioButton fx:id="rb2" layoutX="238.0" layoutY="18.0" mnemonicParsing="false" onAction="#HandleRadio" text="File" toggleGroup="$rb" />
     <Label layoutX="14.0" layoutY="108.0" text="Path" />
-    <Label layoutX="14.0" layoutY="153.0" text="Time" />
-    <Slider fx:id="sl1" layoutX="134.0" layoutY="150.0" majorTickUnit="200.0" max="2000.0" onDragDone="#SetProcess" onDragDropped="#SetProcess" prefWidth="140.0" showTickLabels="false" showTickMarks="false" value="1000.0" />
-    <Button fx:id="b4" layoutX="187.0" layoutY="222.0" mnemonicParsing="false" onAction="#CheckStartPopup" prefHeight="47.0" prefWidth="138.0" text="Start" />
-    <Label layoutX="14.0" layoutY="191.0" text="Opponent Name" />
-    <TextField fx:id="tf1" layoutX="134.0" layoutY="187.0" prefWidth="140.0" />
-    <Button fx:id="b3" layoutX="40.0" layoutY="222.0" mnemonicParsing="false" onAction="#Back" prefHeight="47.0" prefWidth="138.0" text="Back" />
-    <Button fx:id="file" layoutX="134.0" layoutY="106.0" mnemonicParsing="false" onAction="#File" prefWidth="68.0" text="File" />
+    <Label layoutX="14.0" layoutY="231.0" text="Time" />
+    <Slider fx:id="sl1" layoutX="125.0" layoutY="228.0" majorTickUnit="200.0" max="2000.0" minHeight="12.0" onDragDone="#SetProcess" onDragDropped="#SetProcess" prefHeight="12.0" prefWidth="90.0" showTickLabels="false" showTickMarks="false" value="1000.0" />
+    <Button fx:id="b4" layoutX="283.0" layoutY="337.0" mnemonicParsing="false" onAction="#CheckStartPopup" prefHeight="47.0" prefWidth="138.0" text="Start" />
+    <Label layoutX="14.0" layoutY="269.0" text="Opponent Name" />
+    <TextField fx:id="tf1" layoutX="125.0" layoutY="265.0" prefWidth="200.0" />
+    <Button fx:id="b3" layoutX="136.0" layoutY="337.0" mnemonicParsing="false" onAction="#Back" prefHeight="47.0" prefWidth="138.0" text="Back" />
+    <Button fx:id="file" layoutX="125.0" layoutY="106.0" mnemonicParsing="false" onAction="#File" prefWidth="68.0" text="File" />
     <Label fx:id="pathlb" layoutX="223.0" layoutY="108.0" prefWidth="160.0" text="" />
-    <RadioButton fx:id="rb3" layoutX="134.0" layoutY="65.0" mnemonicParsing="false" onAction="#HandleRadioPlayer" text="Spieler X">
+    <RadioButton fx:id="rb3" layoutX="125.0" layoutY="65.0" mnemonicParsing="false" onAction="#HandleRadioPlayer" text="Spieler X">
       <toggleGroup>
         <ToggleGroup fx:id="player" />
       </toggleGroup>
     </RadioButton>
     <RadioButton fx:id="rb4" layoutX="238.0" layoutY="65.0" mnemonicParsing="false" onAction="#HandleRadioPlayer" text="Spieler O" toggleGroup="$player" />
-    <TextField fx:id="tf2" layoutX="291.0" layoutY="147.0" prefWidth="68.0" />
+    <TextField fx:id="tf2" layoutX="216.0" layoutY="223.0" prefWidth="109.0" />
     <Label layoutX="14.0" layoutY="18.0" text="Typ" />
     <Label layoutX="14.0" layoutY="65.0" text="Spieler" />
+    <Label layoutX="14.0" layoutY="153.0" text="Pusher Channel" />
+    <Label layoutX="14.0" layoutY="191.0" text="Pusher Event" />
+    <TextField layoutX="125.0" layoutY="150.0" prefWidth="200.0" />
+    <TextField layoutX="125.0" layoutY="188.0" prefWidth="200.0" />
   </children>
 </AnchorPane>

@@ -15,7 +15,7 @@ import com.pusher.client.connection.ConnectionStateChange;
 import com.pusher.client.util.HttpAuthorizer;
 
 public class PushCom {
-	
+
 	public PushCom(String players) {
 		System.out.println("Erfolgreich PushCommunicator erstellt");
 		System.out.println("Du bist: " + players);
@@ -38,7 +38,8 @@ public class PushCom {
 			 * with a value composed of the application key and the
 			 * authentication signature separated by a colon ‘:’ as follows:
 			 */
-			public String authorize(String channelName, String socketId) throws AuthorizationFailureException {
+			public String authorize(String channelName, String socketId)
+					throws AuthorizationFailureException {
 				System.out.println("The clients channelName: " + channelName);
 				System.out.println("The clients socketId: " + socketId);
 
@@ -46,7 +47,8 @@ public class PushCom {
 				String message = socketId + ":" + channelName;
 
 				// calc the hash, e. g. one part of the authentication signature
-				String hash = HmacSHA256.getHmacSHA256HexDigest(appSecret, message);
+				String hash = HmacSHA256.getHmacSHA256HexDigest(appSecret,
+						message);
 
 				// compose the entire authentication signature
 				// <signature> ::= "{"auth":"<appId>:<hash>"}"
@@ -60,6 +62,7 @@ public class PushCom {
 		ConnectionEventListener ce = new ConnectionEventListener() {
 			public void onError(String arg0, String arg1, Exception arg2) {
 			}
+
 			public void onConnectionStateChange(ConnectionStateChange arg0) {
 				System.out.println(arg0.getCurrentState().toString());
 			}
@@ -68,32 +71,34 @@ public class PushCom {
 		System.out.println("Stelle Verbindung her");
 		pusher.connect(ce, ConnectionState.ALL);
 
-		Channel channel = pusher.subscribe("test_channel");
+		Channel channel = pusher.subscribe("my_channel");
 
 		SubscriptionEventListener sb = new SubscriptionEventListener() {
 			public void onEvent(String arg0, String arg1, String arg2) {
 				System.out.println("Received event with data: " + arg2);
 			}
 		};
-		channel.bind("my_event", sb);
-		PrivateChannel channel2 = pusher.subscribePrivate("private-channel",
-				new PrivateChannelEventListener() {
-					public void onSubscriptionSucceeded(String channelName) {
-							System.out.println("Subscription succeeded!!!");
-					}
+		channel.bind("new_message", sb);
+		PrivateChannel channel2 = null;
+		channel2 = pusher.subscribePrivate("private-channel",
+			    new PrivateChannelEventListener() {
+			        public void onSubscriptionSucceeded(String channelName) {
+			            this.trigger("client-myEvent", "{\"myName\":\"Bob\"}");
+			        }
 
-					public void onEvent(String arg0, String arg1, String arg2) {
-						System.out.println("event");
+					public void onEvent(String channelName, String eventName,
+							String data) {
+						// TODO Auto-generated method stub
 						
 					}
 
-					public void onAuthenticationFailure(String arg0,
-							Exception arg1) {
-						System.out.println("auth fail");
+					public void onAuthenticationFailure(String message,
+							Exception e) {
+						// TODO Auto-generated method stub
 						
 					}
-				});
-		channel2.trigger("client-event", "clienttestdata");
 
+			        // Other PrivateChannelEventListener methods
+			    });
 	}
 }
