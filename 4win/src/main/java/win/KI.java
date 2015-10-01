@@ -34,6 +34,13 @@ public class KI {
 
 		KI ki = new KI();
 		ki.befüllen();
+		
+		//ki.zugeinlesen(spalte, player); // Übergabe fehlt noch
+		
+		ki.bewerten(ki);
+		
+		ki.zugausführen();
+		
 		 
 		
 		//ki.einlesen(ki.berechnen(), 1);
@@ -187,7 +194,10 @@ public class KI {
 	return num;// wenn max 4 automatisch 4 gewinnt
 	} // Ende Hilfsfunktion
 	
-	
+	public void zugausführen() {
+		// Zug ausführen
+		
+	}
 	
 	// Mitch - Nimmt erste Spalte- Ziel keine fehler werfen
 	
