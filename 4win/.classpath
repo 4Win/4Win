@@ -22,7 +22,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/dwome/Downloads/hsqldb-2.3.3/hsqldb/lib/hsqldb.jar"/>
-	<classpathentry kind="lib" path="/Users/dwome/Downloads/pusher-java-client-0.3.3-jar-with-dependencies-2.jar"/>
+	<classpathentry kind="lib" path="hsqldb.jar"/>
+	<classpathentry kind="lib" path="jfxrt.jar"/>
+	<classpathentry kind="lib" path="pusher-java-client-0.3.3-jar-with-dependencies.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

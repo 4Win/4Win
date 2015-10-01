@@ -465,6 +465,37 @@ public class Database {
 		} 
 	}
 	
+	public ResultSet getSpiele() throws Exception {
+		// Verbindung zur Datenbank herstellen
+		Connection con = getConnection();
+		ResultSet res = null;
+		Statement stmt = null;
+		
+		try {
+			
+			// Alle Einträge aus der Tabelle Spiele auslesen
+			stmt = con.createStatement();
+			String sql = "SELECT * FROM Spiele";
+			res = stmt.executeQuery(sql);
+			
+			return res;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				res.close();
+				stmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return res;
+		
+	}
+	
 	private static void outputResultSet(ResultSet rs) throws Exception {
 	    ResultSetMetaData rsMetaData = rs.getMetaData();
 	    int numberOfColumns = rsMetaData.getColumnCount();
