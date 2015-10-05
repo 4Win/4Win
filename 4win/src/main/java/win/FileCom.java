@@ -120,7 +120,7 @@ public class FileCom {
 					} else {
 						agentenlöschen(); // Agentendateilöschen
 						// // spielen
-						k.einlesen(gegnerzug, 2);
+						k.zugeinlesen(gegnerzug, 2);
 						serverlöschen();
 						schreiben(k.berechnen());
 						Thread.sleep(500);
