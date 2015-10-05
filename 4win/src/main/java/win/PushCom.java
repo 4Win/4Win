@@ -71,34 +71,32 @@ public class PushCom {
 		System.out.println("Stelle Verbindung her");
 		pusher.connect(ce, ConnectionState.ALL);
 
-		Channel channel = pusher.subscribe("my_channel");
+		// Channel channel = pusher.subscribe("my_channel");
+		//
+		// SubscriptionEventListener sb = new SubscriptionEventListener() {
+		// public void onEvent(String arg0, String arg1, String arg2) {
+		// System.out.println("Received event with data: " + arg2);
+		// }
+		// };
+		// channel.bind("new_message", sb);
+		PrivateChannelEventListener pce = new PrivateChannelEventListener() {
+			public void onSubscriptionSucceeded(String channelName) {
+				System.out.println("Succeded!");
+			}
 
-		SubscriptionEventListener sb = new SubscriptionEventListener() {
-			public void onEvent(String arg0, String arg1, String arg2) {
-				System.out.println("Received event with data: " + arg2);
+			public void onEvent(String channelName, String eventName,
+					String data) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void onAuthenticationFailure(String message, Exception e) {
+				// TODO Auto-generated method stub
+
 			}
 		};
-		channel.bind("new_message", sb);
-		PrivateChannel channel2 = null;
-		channel2 = pusher.subscribePrivate("private-channel",
-			    new PrivateChannelEventListener() {
-			        public void onSubscriptionSucceeded(String channelName) {
-			            this.trigger("client-myEvent", "{\"myName\":\"Bob\"}");
-			        }
+		PrivateChannel channelprivate = pusher.subscribePrivate(
+				"private-channel", pce);
 
-					public void onEvent(String channelName, String eventName,
-							String data) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					public void onAuthenticationFailure(String message,
-							Exception e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-			        // Other PrivateChannelEventListener methods
-			    });
 	}
 }
