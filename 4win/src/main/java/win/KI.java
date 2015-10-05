@@ -31,25 +31,26 @@ public class KI {
 	//bekommt als Eingabe Spalte und Name des Spielers aus der Serverdatei 
 	public static void main(String[] args) {
 
-		KI KI = new KI();
-		
-//		KI.zugeinlesen(0, 2);
-		KI.befüllen();
-		KI.zugeinlesen(0, 1);
-
-		KI.berechnen(); 
+//		KI KI = new KI();
 //		
+//		KI.zugeinlesen(0, 2);
+//		
+//
+//		KI.berechnen();
 		
+		String server = "true#Satzspielen#2#offen";
+		String[] stuecke = server.split("#");
+		int spalte = Integer.parseInt(stuecke[2]); 
+		System.out.println(spalte);
+		int player = 2; 
+//		
 //		
 //		//KI.zugeinlesen(spalte, player); // Übergabe fehlt noch
 //		
 //		KI.bewerten(KI);
 //		
 //		KI.zugausführen();
-		
-		 
-		
-		//KI.einlesen(KI.berechnen(), 1);
+
 		
 	}
 	
@@ -70,21 +71,24 @@ public class KI {
 		}			
 	}
 	
-	
-
 	// Methode die Zeile aus Spalte errechnet 
 	// geht Array durch und findet erste Zeile  die in Spalte noch nicht befüllt ist 
 	//schreibt die Spielernummer an der Stelle in den Array 
-	public void zugeinlesen(int spalte, int player) {
+	public int zugeinlesen(int spalte, int player) {
 		int zeile = 0;
 		for (int x = 5; x >= 0; x--) {
 			if (feld[x][spalte] == 0) {
 				zeile = x;
 				feld[zeile][spalte] = spieler; // 2 ist Gegener 1 sind wir
+				
 				System.out.println(zeile);
-				return;
+				int berechnung = berechnen();
+				return berechnung; 
+				
+				
 			}
 		}
+		return zeile;
 	}
 	
 
@@ -242,26 +246,8 @@ public class KI {
 	// schreibt die SpaltenNummer in Spalte und wirft diese zurück
 	public int berechnen() {
 		
-		//Koordinaten der Möglichkeiten raussuchen 
-		
-		// Bewerten 
-		
-		// Betrag der Bewertung dem Feld zuweisen
-		
-		//1. Zug in die Mitte werfen 
-		//Kann ich gewinnen?  
-		// max. 7 Möglichkeiten 
-		// 1. überprüfen 
-		// 3 nach rechts 
-		// 3 nach links 
-		// 3 nach unten 
-		// Wenn eine der Möglichkeiten da ist dann 1 in das Feld ansosnten 0 
-		// Sind alle 7 bewertet wird das mit 1 ausgeführt 
-		// Ansonsten Zufall
-		// Gibts mehrere mit ner 1 auch Zufall 
-		
 		int spalte = 1; 
-		
+		 
 		for(int y=0; y<=6; y++)
 		{
 			for (int x = 5; x >= 0; x--) {
@@ -270,7 +256,9 @@ public class KI {
 				{
 					 spalte = y; 
 					 System.out.println(spalte);
+					
 					 return spalte;  
+					  
 				}
 			 ;}
 			}
