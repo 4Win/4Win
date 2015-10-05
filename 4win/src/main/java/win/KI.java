@@ -1,6 +1,8 @@
 package win; 
 import java.util.Random;
 
+import database.Database;
+
 
 public class KI {
 	
@@ -29,20 +31,16 @@ public class KI {
 	
 	//KI Objekt kann einlesen aufrufen 
 	//bekommt als Eingabe Spalte und Name des Spielers aus der Serverdatei 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
-//		KI KI = new KI();
+		KI KI = new KI();
 //		
-//		KI.zugeinlesen(0, 2);
-//		
+		KI.zugeinlesen(0, 2);
+		KI.zugeinlesen(1, 2);
+		
 //
 //		KI.berechnen();
 		
-		String server = "true#Satzspielen#2#offen";
-		String[] stuecke = server.split("#");
-		int spalte = Integer.parseInt(stuecke[2]); 
-		System.out.println(spalte);
-		int player = 2; 
 //		
 //		
 //		//KI.zugeinlesen(spalte, player); // Übergabe fehlt noch
@@ -74,18 +72,19 @@ public class KI {
 	// Methode die Zeile aus Spalte errechnet 
 	// geht Array durch und findet erste Zeile  die in Spalte noch nicht befüllt ist 
 	//schreibt die Spielernummer an der Stelle in den Array 
-	public int zugeinlesen(int spalte, int player) {
+	public int zugeinlesen(int spalte, int spieler) throws Exception {
+		Database db = new Database(); 
 		int zeile = 0;
 		for (int x = 5; x >= 0; x--) {
 			if (feld[x][spalte] == 0) {
 				zeile = x;
 				feld[zeile][spalte] = spieler; // 2 ist Gegener 1 sind wir
 				
-				System.out.println(zeile);
+				db.insertZuege(1, zeile, spalte, spieler); 
+				db.selectZuege();
 				int berechnung = berechnen();
+				db.insertZuege(1, zeile, berechnung, 1); // Berechnung der Zeile für meinen Einwurf noch machen 
 				return berechnung; 
-				
-				
 			}
 		}
 		return zeile;
