@@ -47,7 +47,7 @@ public class Database {
 			Connection con = getConnection();
 			// Tabelle "Züge" anlegen
 			Statement stmt3 = con.createStatement();
-			String sql3 = "CREATE TABLE Zuege(ID INTEGER NOT NULL IDENTITY, Satz INTEGER NOT NULL, Zeile INTEGER NOT NULL, Spalte INTEGER NOT NULL, Spieler VARCHAR(25) NOT NULL)";
+			String sql3 = "CREATE TABLE Zuege(ID INTEGER NOT NULL IDENTITY, Satz INTEGER NOT NULL, Zeile INTEGER NOT NULL, Spalte INTEGER NOT NULL, Spieler INTEGER NOT NULL)";
 			ResultSet rs3 = stmt3.executeQuery(sql3);
 			rs3.close();
 			stmt3.close();
@@ -298,7 +298,7 @@ public class Database {
 		}
 	}
 
-	public void insertZuege(int satz, int zeile, int spalte, String spieler) throws Exception {
+	public void insertZuege(int satz, int zeile, int spalte, int spieler) throws Exception {
 		// Verbindung zur Datenbank herstellen 
 		Connection con = getConnection();
 		// Einfügen eines neuen Spiels
@@ -330,7 +330,7 @@ public class Database {
 			prep.setInt(2, satz);
 			prep.setInt(3, zeile);
 			prep.setInt(4, spalte);
-			prep.setString(5, spieler);
+			prep.setInt(5, spieler);
 			prep.executeUpdate();
 			con.commit();
 		} catch (SQLException e) {
