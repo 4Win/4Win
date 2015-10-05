@@ -1,5 +1,4 @@
-
-package win;
+package win; 
 import java.util.Random;
 
 
@@ -27,23 +26,31 @@ public class KI {
 	int[][] feld = new int[hoehe][breite];
 
 
+	
 	//KI Objekt kann einlesen aufrufen 
 	//bekommt als Eingabe Spalte und Name des Spielers aus der Serverdatei 
 	public static void main(String[] args) {
 
-		KI ki = new KI();
-		ki.befüllen();
+		KI KI = new KI();
 		
-		//ki.zugeinlesen(spalte, player); // Übergabe fehlt noch
+//		KI.zugeinlesen(0, 2);
+		KI.befüllen();
+		KI.zugeinlesen(0, 1);
+
+		KI.berechnen(); 
+//		
 		
-		ki.bewerten(ki);
-		
-		ki.zugausführen();
+//		
+//		//KI.zugeinlesen(spalte, player); // Übergabe fehlt noch
+//		
+//		KI.bewerten(KI);
+//		
+//		KI.zugausführen();
 		
 		 
 		
-		//ki.einlesen(ki.berechnen(), 1);
-	
+		//KI.einlesen(KI.berechnen(), 1);
+		
 	}
 	
 	//Getter / Setter  Methoden
@@ -66,7 +73,7 @@ public class KI {
 	
 
 	// Methode die Zeile aus Spalte errechnet 
-	// geht Array durch und findet erste Zeile  die in Spalte noch nicht bef�llt ist 
+	// geht Array durch und findet erste Zeile  die in Spalte noch nicht befüllt ist 
 	//schreibt die Spielernummer an der Stelle in den Array 
 	public void zugeinlesen(int spalte, int player) {
 		int zeile = 0;
@@ -81,13 +88,42 @@ public class KI {
 	}
 	
 
+	// Diese Methoden findet die Koordinaten für die nnächstmöglichen Einwürfe der KI heraus 
+	// und schreibt die x und y Koordinaten an die Arrays; 
+	public void bespielbareFelder(KI KI)
+	{
+		//kp warum das nicht funktioniert... 
+		int [] xkoordinaten = new int[7]; 
+		int [] ykoordinaten = new int[7]; 
+		
+		int[][]feld = KI.getFeld();
+		
+		for(int y=0; y<=6; y++) 
+		{
+			for (int x = 5; x >= 0; x--) 
+			{
+				if(feld[x][y] == 0)
+				{	
+					xkoordinaten[y] = x;
+					ykoordinaten[y] = y; 
+					
+					System.out.println(xkoordinaten[x] +""+ ykoordinaten[x]);
+					break;
+				}
+				
+			}
+			
+		
+		}
+	}
+
 	
-	public int bewerten(KI ki){ // bewertet übergebenes feld
+	public int bewerten(KI KI){ // bewertet übergebenes feld
 // 
 		 int spieler2er = 0; int gegner2er = 0;
 		 int spieler3er = 0; int gegner3er = 0;
 		 
-		 int[][]feld = ki.getFeld(); // holt sich feld von Objekt
+		 int[][]feld = KI.getFeld(); // holt sich feld von Objekt
 		  
 	// zuerst nur höhe überprüfen
 		 for (int x=0; x<breite; x++) {
@@ -199,11 +235,30 @@ public class KI {
 	}
 	
 	// Mitch - Nimmt erste Spalte- Ziel keine fehler werfen
+
 	
 	// Diese Methode berechnet die Entscheidung der KI 
 	// geht Spalten und Zeilen durch und sucht dich erstes freies Feld 
 	// schreibt die SpaltenNummer in Spalte und wirft diese zurück
 	public int berechnen() {
+		
+		//Koordinaten der Möglichkeiten raussuchen 
+		
+		// Bewerten 
+		
+		// Betrag der Bewertung dem Feld zuweisen
+		
+		//1. Zug in die Mitte werfen 
+		//Kann ich gewinnen?  
+		// max. 7 Möglichkeiten 
+		// 1. überprüfen 
+		// 3 nach rechts 
+		// 3 nach links 
+		// 3 nach unten 
+		// Wenn eine der Möglichkeiten da ist dann 1 in das Feld ansosnten 0 
+		// Sind alle 7 bewertet wird das mit 1 ausgeführt 
+		// Ansonsten Zufall
+		// Gibts mehrere mit ner 1 auch Zufall 
 		
 		int spalte = 1; 
 		
@@ -222,23 +277,8 @@ public class KI {
 		 
 		// Dann neue Zufallszahl 
 		return 1;
-		
-		//Zug ausführen
-		
+		}
 	
 		
-		
-		//1. Zug in die Mitte werfen 
-		//Kann ich gewinnen?  
-		// max. 7 Möglichkeiten 
-		// 1. überprüfen 
-		// 3 nach rechts 
-		// 3 nach links 
-		// 3 nach unten 
-		// Wenn eine der Möglichkeiten da ist dann 1 in das Feld ansosnten 0 
-		// Sind alle 7 bewertet wird das mit 1 ausgeführt 
-		// Ansonsten Zufall
-		// Gibts mehrere mit ner 1 auch Zufall 
-		
 	}
-}
+
