@@ -20,7 +20,6 @@ public class Main extends Application {
 		EventListener e = new EventListener();
 	}
 
-	@Override
 	public void start(Stage stage) throws Exception {
 		Pane root = (Pane) FXMLLoader.load(getClass().getResource(
 				"javafxscene.fxml"));

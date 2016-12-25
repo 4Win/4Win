@@ -1,271 +1,353 @@
-package win; 
+package win;
+import java.util.Random;
+import database.Database;
 import java.util.Random;
 
 import database.Database;
 
-
 public class KI {
-	
+	static int leer = 0;
 	int hoehe = 6;
 	int breite = 7;
 	
 	// Feldbezeichnung
-	static int leer = 0;
 	int spieler = 1;
-	int gegner = -1;
+	int gegner = 2;
 	// Feldbewertungen max 1000 pkt = Sieg oder min -1000 pkt verloren 
 	int muster4Spieler = 1000;
-	int muster4Gegner = -1000;
+	int muster4Gegner = 1000;
 	
 	int muster3spieler = 100;
 	int muster3gegner = 500;	
 	
 	int muster2spieler = 10;
-	int muster2gegner = 10;
-			
+	int muster2gegner = 20;
+
+	int freieFelder [] = new int [7];
+	int bewertungenFelder[] = new int [7];
+
+	int[][] feld = new int[6][7];
 	
-	
-	int[][] feld = new int[hoehe][breite];
+	private static KI instance = null;
 
+	private KI() {
+		// Exists only to defeat instantiation.
+	}
 
-	
-	//KI Objekt kann einlesen aufrufen 
-	//bekommt als Eingabe Spalte und Name des Spielers aus der Serverdatei 
-	public static void main(String[] args) throws Exception {
-
-		KI KI = new KI();
-//		
-		KI.zugeinlesen(0, 2);
-		KI.zugeinlesen(1, 2);
-		
-//
-//		KI.berechnen();
-		
-//		
-//		
-//		//KI.zugeinlesen(spalte, player); // Übergabe fehlt noch
-//		
-//		KI.bewerten(KI);
-//		
-//		KI.zugausführen();
-
-		
+	public static KI getInstance() {
+		if (instance == null) {
+			System.out.println("KI - erfolgreich erzeugt!");
+			instance = new KI();
+		}
+		return instance;
 	}
 	
-	//Getter / Setter  Methoden
+	public void clean()
+	{
+		feld = new int[6][7];
+	}
+
+	// Getter / Setter Methoden
 	public int[][] getFeld() {
-		return this.feld; }
-	public void setFeld(int x, int y, int wert) {
-		this.feld[x][y] = wert; }
-	
-	
-	// Feld aufbauen und befüllen - Start	
-	public void befüllen (){
-		for (int y=0; y<hoehe; y++){
-			for (int x=0; x<breite; x++){
-				feld[y][x] = leer;
-				System.out.println(feld[y][x]);
-			}	
-		}			
+		return this.feld;
 	}
-	
-	// Methode die Zeile aus Spalte errechnet 
-	// geht Array durch und findet erste Zeile  die in Spalte noch nicht befüllt ist 
-	//schreibt die Spielernummer an der Stelle in den Array 
+
+	// Feld aufbauen und befüllen - Start
+	public void befüllen() {
+		synchronized (feld) {
+			for (int y = 0; y < hoehe; y++) {
+				for (int x = 0; x < breite; x++) {
+					feld[y][x] = leer;
+					System.out.println(feld[y][x]);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Methode zum einpflegen des Gegner Zug
+	 * @param spalte
+	 * @param spieler
+	 * @return zeile 
+	 * @throws Exception
+	 */
 	public int zugeinlesen(int spalte, int spieler) throws Exception {
-		Database db = new Database(); 
 		int zeile = 0;
+		if(spalte == -1)
+		{
+			zeile = 5;
+			feld[5][3] = 1;
+		}
+		else
+		{
 		for (int x = 5; x >= 0; x--) {
 			if (feld[x][spalte] == 0) {
 				zeile = x;
-				feld[zeile][spalte] = spieler; // 2 ist Gegener 1 sind wir
-				
-				db.insertZuege(1, zeile, spalte, spieler); 
-				db.selectZuege();
-				int berechnung = berechnen();
-				db.insertZuege(1, zeile, berechnung, 1); // Berechnung der Zeile für meinen Einwurf noch machen 
-				return berechnung; 
+				feld[zeile][spalte] = spieler;
+					break; 
 			}
 		}
-		return zeile;
+		}
+		
+		return zeile; 
+		
 	}
+
+
+	public void drawArray(int[][] array) {
+		synchronized (feld) {
+			System.out.println("Derzeitiges Spielfeld");
+			for (int m = 0; m <= 5; m++) {
+				for (int n = 0; n <= 6; n++) {
+					if (array != null) {
+						System.out.print("|" + array[m][n]);
+					}
+				}
+				System.out.println("");
+			}
+		}
+	}
+
+	public int[][] getArray() {
+		synchronized (feld) {
+			return feld;
+		}
+	}
+
+
 	
 
-	// Diese Methoden findet die Koordinaten für die nnächstmöglichen Einwürfe der KI heraus 
-	// und schreibt die x und y Koordinaten an die Arrays; 
-	public void bespielbareFelder(KI KI)
-	{
-		//kp warum das nicht funktioniert... 
-		int [] xkoordinaten = new int[7]; 
-		int [] ykoordinaten = new int[7]; 
+	/**
+	 * Hilfsmethode zur Bewertung eines Zuges
+	 * @param player Spieler welcher bewertet werden muss
+	 * @param h		 Zeilen-Position die bewertet werden muss
+	 * @param b		 Spalten-Postition die bewertet werden muss
+	 * @param dh	 Erkennt Bewertungsrichtung - Verschiebung in Zeilenrichtung
+	 * @param db	 Erkennt Bewertungsrichtung - Verschiebung in Spaltenrichtung
+	 * @return num	- Gibt eine Variable num zurück, welche für die Enhaltenen Muster steht
+	 */
+	private int mustercheck( int player, int h, int b, int dh, int db) {
+	  int num = 0;
+	  
+	  if (dh == 0 && db == 1){ // Waagerecht
+		  for (int i=-3; i<4; i++){
+			  try{				  
+				 if ((this.feld[h-i*dh][b+i*db]== player) || (this.feld[h-i*dh][b+i*db]==0)){
+					 if (feld[h-i*dh][b+i*db]== player) {
+						 num++;// wenn feld belegt ist +1 bis max 4
+					 }
+					 }
+				 else if(i<0){}
+				 else
+					 break;
+				 }
+			  catch (ArrayIndexOutOfBoundsException e){}
+			 {
+				  if (num >= 3){
+					 num = 3;
+				 }
+	  }
+			 }
+		  }
+	  else if (dh == -1 && db == 0){ // Vertikal
+		  for (int i= 0; i<4; i++){
+			  try{				  
+				 if ((this.feld[h-i*dh][b+i*db]== player) || (this.feld[h-i*dh][b+i*db]==0)){
+					 if (feld[h-i*dh][b+i*db]== player) {
+						 num++;// wenn feld belegt ist +1 bis max 4
+					 }
+					 }
+				 else
+					 break;
+				 }
+			  catch (ArrayIndexOutOfBoundsException e){}
+			 {
+	  }
+			 }
+		  if (h == 0 && num == 2){ // falls nicht genug Platz für 4-Muster
+			  num = 0;
+		  }
+			  
+		  }
+	  else if (dh == 1 && db == 1){ // Diagonal rechts
+		  for (int i= -3; i<4; i++){
+			  try{				  
+				 if ((this.feld[h-i*dh][b+i*db]== player) || (this.feld[h-i*dh][b+i*db]==0)){
+					 if (feld[h-i*dh][b+i*db]== player) {
+						 num++;// wenn feld belegt ist +1 bis max 4
+					 }
+					 }
+				 else if(i<0){}
+				 else
+					 break;
+				 }
+			  catch (ArrayIndexOutOfBoundsException e){}
+			  if (num >= 3){
+					 num = 3;
+				 }
+			 {
+	  }
+			 }
+		  }
+	  else if (dh == 1 && db == -1){ // Diagonal links
+		  for (int i= -3; i<4; i++){
+			  try{				  
+				 if ((this.feld[h-i*dh][b+i*db]== player) || (this.feld[h-i*dh][b+i*db]==0)){
+					 if (feld[h-i*dh][b+i*db]== player) {
+						 num++;// wenn feld belegt ist +1 bis max 4
+					 }
+					 }
+				 else if(i<0){}
+				 else
+					 break;
+				 }
+			  catch (ArrayIndexOutOfBoundsException e){}
+			  if (num >= 3){
+					 num = 3;
+				 }
+			 {
+	  }
+			 }
+		  }
+	  return num;
+	  }
+
+	
+		/**
+		 * Hilfmethode zur Berechnung der Bewertung
+		 * @param b - Spalte des zu berechnenden Feldes
+		 * @param h - Zeile des zu berechnenden Feldes
+		 * @return bewertung 
+		 */
+		public int bewertenFeld( int b, int h){ // bewertet übergebenes feld
+			
+			 int spieler2er = 0; int gegner2er = 0;
+			 int spieler3er = 0; int gegner3er = 0;
+			 
+				        	if (h>= 0) { // Ist platz für 4 nach unten ?
+				        		 if (mustercheck(spieler,h,b,-1,0)==3)
+				        			spieler3er ++;
+				        		else if (mustercheck(gegner,h,b,-1,0)==3)	
+				        			gegner3er ++;
+				        		else if (mustercheck(spieler,h,b,-1,0)==2)
+				        			spieler2er ++;
+				        		else if (mustercheck(gegner,h,b,-1,0)==2)
+				        			gegner2er ++;				        	      
+				        	}
+				        	// Noch 4 Chips nach rechts moeglich?
+				        	if (breite>=4) {
+				        		// 3 gleiche Chips uebereinander?
+				        		if (mustercheck(spieler,h,b,0,1)==3) 
+				        			spieler3er++; 
+				        		else if (mustercheck(gegner,h,b,0,1)==3){
+				        			gegner3er++;
+				        		 System.out.println("3-er gefunden");}
+				        		// 2 gleiche Chips uebereinander?
+				        		else if (mustercheck(spieler,h,b,0,1)==2) 
+				        			spieler2er++; 
+				        		else if (mustercheck(gegner,h,b,0,1)==2){
+				        			gegner2er++;
+				        		 System.out.println("2-er gefunden");}
+				        	}
+				        	
+				            // Noch 4 Chips nach links oben moeglich?
+				            if ((h !=0 ) && (b>=4)) {
+				              // 3 gleiche Chips uebereinander?
+				               if (mustercheck(spieler,h,b,1,-1)==3) 
+				                spieler3er++; 
+				              else if (mustercheck(gegner,h,b,1,-1)==3)
+				                gegner3er++;
+				              // 2 gleiche Chips uebereinander?
+				              else if (mustercheck(spieler,h,b,1,-1)==2) 
+				                spieler2er++; 
+				              else if (mustercheck(gegner,h,b,1,-1)==2)
+				                gegner2er++;
+				            } 
+				            // Noch 4 Chips nach rechts oben moeglich?
+				            if ((h != 0)) {
+				              // 3 gleiche Chips uebereinander?
+				               if (mustercheck(spieler,h,b,1,1)==3) 
+				                spieler3er++; 
+				              else if (mustercheck(gegner,h,b,1,1)==3)
+				                gegner3er++;
+				              // 2 gleiche Chips uebereinander?
+				              else if (mustercheck(spieler,h,b,1,1)==2) 
+				                spieler2er++; 
+				              else if (mustercheck(gegner,h,b,1,1)==2)
+				                gegner2er++;
+				            } 
+				            return muster3spieler*spieler3er + muster2spieler*spieler2er + muster3gegner*gegner3er + muster2gegner*gegner2er;
+				        					 
+		}
+	
+/**
+ * Diese Methode berechnet die Entscheidung der KI
+ * @return ausgabeSpalte
+ */
+public int berechnen(){
 		
-		int[][]feld = KI.getFeld();
+		int[] volleSpalten= new int[6]; 
+		int bespielbares_feld;
+		int ausgabeSpalte;
 		
-		for(int y=0; y<=6; y++) 
-		{
-			for (int x = 5; x >= 0; x--) 
-			{
-				if(feld[x][y] == 0)
-				{	
-					xkoordinaten[y] = x;
-					ykoordinaten[y] = y; 
-					
-					System.out.println(xkoordinaten[x] +""+ ykoordinaten[x]);
-					break;
-				}
+	// Bespielbare Felder finden
+		for (int b=0; b<this.breite; b++){
+				bespielbares_feld = leereZeile(b);
+				freieFelder[b]  = bespielbares_feld;
 				
+				if (bespielbares_feld == -1){
+					volleSpalten [b] = -1;
+				}		
+		}
+		// Berechnet Bewertungen
+		for (int i=0; i<6; i++){
+			
+			if (volleSpalten[i] == -1){ // falls Spalte voll Bewertung auf -1
+				bewertungenFelder[i] = -1;
+			}
+			else{
+			bewertungenFelder[i] = bewertenFeld( i, freieFelder[i]);
+			}
+		}
+		
+    	ausgabeSpalte = 3; 
+    	System.out.println(ausgabeSpalte);
+    	
+    	// Sucht höchste Bewertung
+		for(int i=0; i<=6;i++){
+			
+			if(bewertungenFelder[ausgabeSpalte]<bewertungenFelder[i]){ 
+				ausgabeSpalte = i; 	
+			}
+		}
+		
+		if (bewertungenFelder[ausgabeSpalte] == -1){ // falls alle Spalte voll
+				System.out.println("Alle Spalten sind voll");
+				return 666; 
+			}
+		else{ // Gibt ausgabeSpalte zurück
+			for(int i=0; i<=6; i++){
+			System.out.print(bewertungenFelder[i]+"/");
+			}
+		System.out.println(ausgabeSpalte);
+		return ausgabeSpalte;
+		}
+	}
+
+	/**
+	 * Sucht bespielbare Zeile in Spalte
+	 * @param spalte
+	 * @return freie_zeile
+	 */
+	public int leereZeile(int spalte){ // Hilfmethode findet leere Felder
+		int freie_zeile;
+		for(int i = 5; i>=0; i--){
+			if ( feld [i][spalte] == 0){
+				freie_zeile = i;
+						return freie_zeile;
 			}
 			
-		
 		}
+		return -1;
 	}
-
-	
-	public int bewerten(KI KI){ // bewertet übergebenes feld
-// 
-		 int spieler2er = 0; int gegner2er = 0;
-		 int spieler3er = 0; int gegner3er = 0;
-		 
-		 int[][]feld = KI.getFeld(); // holt sich feld von Objekt
-		  
-	// zuerst nur höhe überprüfen
-		 for (int x=0; x<breite; x++) {
-			    for (int y=0; y<hoehe; y++) {
-			        // Ist noch Platz um 4 Chips nach oben zu setzen?
-			        if (hoehe-y>=4) { // Ist platz für 4 nach oben ?
-			        	if (mustercheck(feld,spieler,x,y,0,-1)==4){
-			        		return muster4Spieler;
-			        		}
-			        		else if (mustercheck(feld,gegner,x,y,0,-1)==4){
-				        		return muster4Gegner;
-			        		}
-			        		else if (mustercheck(feld,spieler,x,y,0,-1)==3){
-			        			spieler3er ++;
-			        		}
-			        		else if (mustercheck(feld,gegner,x,y,0,-1)==3){
-			        			gegner3er ++;
-			        		}
-			        		else if (mustercheck(feld,spieler,x,y,0,-1)==2){
-			        			spieler2er ++;
-			        		}
-			        		else if (mustercheck(feld,gegner,x,y,0,-1)==2){
-			        			gegner2er ++;
-			        	      }
-			            // Noch 4 Chips nach rechts oben moeglich?
-			            if ((hoehe-y>=4) && (breite-x>=4)) {
-			              // 4 gleiche Chips nach rechts oben?
-			              if (mustercheck(feld,spieler,x,y,1,1)==4) 
-			                return muster4Spieler;  // gewonnen
-			              
-			              else if (mustercheck(feld,gegner,x,y,1,1)==4)
-			                return muster4Gegner;  // verloren
-			              // 3 gleiche Chips uebereinander?
-			              else if (mustercheck(feld,spieler,x,y,1,1)==3) 
-			                spieler3er++; 
-			              else if (mustercheck(feld,gegner,x,y,1,1)==3)
-			                gegner3er++;
-			              // 2 gleiche Chips uebereinander?
-			              else if (mustercheck(feld,spieler,x,y,1,1)==2) 
-			                spieler2er++; 
-			              else if (mustercheck(feld,gegner,x,y,1,1)==2)
-			                gegner2er++;
-			            } 
-			            // Noch 4 Chips nach rechts moeglich?
-			            if (breite-x>=4) {
-			              if (mustercheck(feld,spieler,x,y,1,0)==4) 
-			                return muster4Spieler;  // gewonnen
-			              else if (mustercheck(feld,gegner,x,y,1,0)==4)
-			                return muster4Gegner;  // verloren
-			              // 3 gleiche Chips uebereinander?
-			              else if (mustercheck(feld,spieler,x,y,1,0)==3) 
-			                spieler3er++; 
-			              else if (mustercheck(feld,gegner,x,y,1,0)==3)
-			                gegner3er++;
-			              // 2 gleiche Chips uebereinander?
-			              else if (mustercheck(feld,spieler,x,y,1,0)==2) 
-			                spieler2er++; 
-			              else if (mustercheck(feld,gegner,x,y,1,0)==2)
-			                gegner2er++;
-			            }
-			            // Noch 4 Chips nach rechts unten moeglich?
-			            if ((breite-x>=4) && (y>=3)) {
-			               if (mustercheck(feld,spieler,x,y,1,-1)==4) 
-			                return muster4Spieler;  // gewonnen
-			              else if (mustercheck(feld,gegner,x,y,1,-1)==4)
-			                return muster4Gegner;  // verloren
-			              // 3 gleiche Chips uebereinander?
-			              else if (mustercheck(feld,spieler,x,y,1,-1)==3) 
-			                spieler3er++; 
-			              else if (mustercheck(feld,gegner,x,y,1,-1)==3)
-			                gegner3er++;
-			              // 2 gleiche Chips uebereinander?
-			              else if (mustercheck(feld,spieler,x,y,1,-1)==2) 
-			                spieler2er++; 
-			              else if (mustercheck(feld,gegner,x,y,1,-1)==2)
-			                gegner2er++;
-			            } 
-			        		
-			        	}
-			        		
-			        }
-			     }
-		 return muster3spieler*spieler3er + muster2spieler*spieler2er - muster3gegner*gegner3er + muster2gegner*gegner2er;
-	}
-	
-	// Hilfsfunktion zum Erkennen eines 2er-, 3er- oder 4er-Musters
-	// dx und dy geben die Richtung an, in die gesucht wird
-	// (ab der Position (x,y))
-	private static int mustercheck(int [][] feld, int spieler, int x, int y, int dx, int dy) {
-	  int num = 0;
-	  // dx und dy, je nach richtung 0 oder 1 oder -1 
-	  if (  ((feld[x][y]==spieler) || (feld[x][y]==leer)) // Überprüfung auf Koordinate
-	     && ((feld[x+1*dx][y+1*dy]== spieler) || (feld[x+1*dx][y+1*dy]==leer)) // Überprüfung auf nächster Koordinate = 2-Muster
-	     && ((feld[x+2*dx][y+2*dy]== spieler) || (feld[x+2*dx][y+2*dy]==leer)) // Überprüfung auf nächster Koordinate = 3 Muster
-	     && ((feld[x+3*dx][y+3*dy]== spieler) || (feld[x+3*dx][y+3*dy]==leer)))
-	  { // überprüfung auf nächster Koordinate = 4 Gewinnt
-
-	    // zaehle Anzahl von spieler belegter Felder
-		  for (int i=0; i<4; i++){ // geht 4 felder durch 
-	    	if (feld[x+i*dx][y+i*dy]==spieler) num++;// wenn feld belegt ist +1 bis max 4
-		  }
-	  }
-	return num;// wenn max 4 automatisch 4 gewinnt
-	} // Ende Hilfsfunktion
-	
-	public void zugausführen() {
-		// Zug ausführen
-		
-	}
-	
-	// Mitch - Nimmt erste Spalte- Ziel keine fehler werfen
-
-	
-	// Diese Methode berechnet die Entscheidung der KI 
-	// geht Spalten und Zeilen durch und sucht dich erstes freies Feld 
-	// schreibt die SpaltenNummer in Spalte und wirft diese zurück
-	public int berechnen() {
-		
-		int spalte = 1; 
-		 
-		for(int y=0; y<=6; y++)
-		{
-			for (int x = 5; x >= 0; x--) {
-				
-				if(feld[x][y] == 0)
-				{
-					 spalte = y; 
-					 System.out.println(spalte);
-					
-					 return spalte;  
-					  
-				}
-			 ;}
-			}
-		 
-		// Dann neue Zufallszahl 
-		return 1;
-		}
-	
-		
-	}
-
+}

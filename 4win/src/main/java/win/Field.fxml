@@ -6,38 +6,104 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="win.Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="915.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="win.Controller">
   <children>
-    <Label fx:id="res" layoutX="0.0" layoutY="0.0" prefHeight="397.0" prefWidth="541.0" text="" />
-    <ImageView fitHeight="401.6999999171776" fitWidth="599.55224609375" layoutX="-1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+    <Label fx:id="res" layoutX="270.0" layoutY="138.0" prefHeight="222.0" prefWidth="263.0" text="" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cfcfcf" height="52.999977111816406" layoutX="-2.0" layoutY="502.0" stroke="#330000" strokeType="INSIDE" strokeWidth="0.0" width="917.0" />
+    <ImageView fitHeight="384.5799836012897" fitWidth="573.9999694824219" layoutX="168.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
       <image>
-        <Image url="pictures/fussballplatz.jpg" />
+        <Image url="@../pictures/spielfeld.png" />
       </image>
     </ImageView>
-    <Label fx:id="name1" layoutX="113.0" layoutY="1.0" text="Ronaldo" textFill="WHITE">
+    <Label fx:id="name2" layoutX="460.0" layoutY="65.0" text="Messi" textFill="BLACK">
       <font>
-        <Font name="System Bold" size="30.0" fx:id="x1" />
+        <Font size="13.0" />
       </font>
     </Label>
-    <Label font="$x1" layoutX="291.0" layoutY="2.0" text=":" textFill="WHITE" />
-    <Label fx:id="name2" font="$x1" layoutX="352.0" layoutY="0.0" text="Messi" textFill="WHITE" />
-    <Label fx:id="count1" layoutX="259.0" layoutY="-6.0" text="0" textFill="WHITE">
+    <Button fx:id="b5" layoutX="33.0" layoutY="517.0" mnemonicParsing="false" onAction="#Back2" text="Zurück" textOverrun="CLIP" />
+    <Text fx:id="spieltag" layoutX="270.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="">
       <font>
         <Font name="System Bold" size="40.0" fx:id="x2" />
       </font>
+    </Text>
+    <Label layoutX="90.0" layoutY="24.0" text="/3" textFill="BLACK">
+      <font>
+        <Font name="System Bold" size="20.0" fx:id="x3" />
+      </font>
     </Label>
-    <Label id="count1" fx:id="count2" font="$x2" layoutX="303.0" layoutY="-6.0" text="0" textFill="WHITE" />
-    <Button fx:id="win1" layoutX="201.0" layoutY="376.0" mnemonicParsing="false" onAction="#win1action" prefWidth="89.0" text="Previous" />
-    <Button fx:id="win2" layoutX="299.0" layoutY="376.0" mnemonicParsing="false" onAction="#win2action" prefWidth="89.0" text="Next" />
-    <Button fx:id="b5" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#Back2" text="Back" textOverrun="CLIP" />
-    <Label fx:id="pic11" layoutX="39.0" layoutY="118.0" prefHeight="36.0" prefWidth="46.0" text="" />
-    <Label fx:id="pic12" layoutX="93.0" layoutY="122.0" text="" />
-    <Label fx:id="pic13" layoutX="153.0" layoutY="114.0" text="" />
-    <Label fx:id="pic14" layoutX="246.0" layoutY="119.0" text="" />
-    <Label fx:id="pic15" layoutX="313.0" layoutY="119.0" text="" />
-    <Label fx:id="pic16" layoutX="377.0" layoutY="119.0" text="" />
-    <Label fx:id="pic17" layoutX="449.0" layoutY="122.0" text="" />
+    <Label fx:id="set1" font="$x3" layoutX="80.0" layoutY="24.0" text="1" textFill="BLACK" />
+    <Text font="$x3" layoutX="33.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Satz" />
+    <Label layoutX="446.0" layoutY="510.0" text=":" textFill="BLACK">
+      <font>
+        <Font name="System Bold" size="25.0" fx:id="x1" />
+      </font>
+    </Label>
+    <Label fx:id="count1" font="$x1" layoutX="424.0" layoutY="512.0" text="0" textFill="BLACK" />
+    <Label fx:id="count2" font="$x1" layoutX="458.0" layoutY="512.0" text="0" textFill="BLACK" />
+    <Button fx:id="win2" layoutX="602.0" layoutY="519.0" mnemonicParsing="false" onAction="#StartNewSet" prefWidth="140.0" text="Nächster Satz" />
+    <Text layoutX="108.0" layoutY="493.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler X" />
+    <Text layoutX="742.0" layoutY="493.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler Y" />
+    <Text layoutX="404.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gegner:">
+      <font>
+        <Font name="System Bold" size="13.0" />
+      </font>
+    </Text>
+    <Label fx:id="pic00" layoutX="304.0" layoutY="150.0" prefWidth="19.0" text="" />
+    <Label fx:id="pic01" layoutX="354.0" layoutY="150.0" text="" />
+    <Label fx:id="pic02" layoutX="400.0" layoutY="150.0" text="" />
+    <Label fx:id="pic03" layoutX="440.0" layoutY="150.0" text="" />
+    <Label fx:id="pic04" layoutX="487.0" layoutY="150.0" text="" />
+    <Label fx:id="pic05" layoutX="534.0" layoutY="150.0" text="" />
+    <Label fx:id="pic06" layoutX="579.0" layoutY="150.0" text="" />
+    <Label fx:id="pic10" layoutX="304.0" layoutY="200.0" prefWidth="29.0" text="" />
+    <Label fx:id="pic11" layoutX="354.0" layoutY="200.0" text="" />
+    <Label fx:id="pic12" layoutX="400.0" layoutY="200.0" text="" />
+    <Label fx:id="pic13" layoutX="440.0" layoutY="200.0" text="" />
+    <Label fx:id="pic14" layoutX="487.0" layoutY="200.0" text="" />
+    <Label fx:id="pic15" layoutX="534.0" layoutY="200.0" text="" />
+    <Label fx:id="pic16" layoutX="579.0" layoutY="200.0" text="" />
+    <Label fx:id="pic20" layoutX="304.0" layoutY="253.0" prefWidth="21.0" text="" />
+    <Label fx:id="pic21" layoutX="354.0" layoutY="253.0" text="" />
+    <Label fx:id="pic22" layoutX="400.0" layoutY="253.0" text="" />
+    <Label fx:id="pic23" layoutX="440.0" layoutY="253.0" text="" />
+    <Label fx:id="pic24" layoutX="487.0" layoutY="253.0" text="" />
+    <Label fx:id="pic25" layoutX="534.0" layoutY="253.0" text="" />
+    <Label fx:id="pic26" layoutX="579.0" layoutY="253.0" text="" />
+    <Label fx:id="pic30" layoutX="304.0" layoutY="303.0" prefWidth="9.0" text="" />
+    <Label fx:id="pic31" layoutX="354.0" layoutY="303.0" text="" />
+    <Label fx:id="pic32" layoutX="400.0" layoutY="303.0" text="" />
+    <Label fx:id="pic33" layoutX="440.0" layoutY="303.0" text="" />
+    <Label fx:id="pic34" layoutX="487.0" layoutY="303.0" text="" />
+    <Label fx:id="pic35" layoutX="534.0" layoutY="303.0" text="" />
+    <Label fx:id="pic36" layoutX="579.0" layoutY="303.0" text="" />
+    <Label fx:id="pic40" layoutX="304.0" layoutY="354.0" prefWidth="12.0" text="" />
+    <Label fx:id="pic41" layoutX="354.0" layoutY="354.0" text="" />
+    <Label fx:id="pic42" layoutX="400.0" layoutY="354.0" text="" />
+    <Label fx:id="pic43" layoutX="440.0" layoutY="354.0" text="" />
+    <Label fx:id="pic44" layoutX="487.0" layoutY="354.0" text="" />
+    <Label fx:id="pic45" layoutX="534.0" layoutY="354.0" text="" />
+    <Label fx:id="pic46" layoutX="579.0" layoutY="354.0" text="" />
+    <Label fx:id="pic50" layoutX="304.0" layoutY="408.0" minHeight="5.0" prefHeight="21.0" prefWidth="23.0" text="" />
+    <Label fx:id="pic51" layoutX="354.0" layoutY="408.0" text="" />
+    <Label fx:id="pic52" layoutX="400.0" layoutY="408.0" text="" />
+    <Label fx:id="pic53" layoutX="440.0" layoutY="408.0" text="" />
+    <Label fx:id="pic54" layoutX="487.0" layoutY="408.0" text="" />
+    <Label fx:id="pic55" layoutX="534.0" layoutY="408.0" prefHeight="15.310546875" text="" />
+    <Label fx:id="pic56" layoutX="579.0" layoutY="408.0" text="" />
+    <Button fx:id="win3" disable="false" layoutX="754.0" layoutY="519.0" mnemonicParsing="false" onAction="#gameSave" prefWidth="140.0" text="Speichern" visible="true" />
+    <Text fx:id="spielrun" layoutX="371.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spiel läuft...">
+      <font>
+        <Font name="System Bold" size="30.0" />
+      </font>
+    </Text>
+    <TextArea fx:id="tazuege1" layoutX="14.0" layoutY="110.0" prefHeight="342.5799560546875" prefWidth="127.10546875" wrapText="true" />
+    <Text layoutX="33.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Züge Spieler 1" />
+    <TextArea fx:id="tazuege2" layoutX="766.0" layoutY="110.0" prefHeight="342.5799560546875" prefWidth="127.10546875" wrapText="true" />
+    <Text layoutX="785.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Züge Spieler 2" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="360.5799560546875" layoutX="8.0" layoutY="100.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="140.7548828125" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="360.5799560546875" layoutX="760.0" layoutY="110.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="140.7548828125" />
   </children>
 </AnchorPane>

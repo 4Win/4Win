@@ -3,38 +3,72 @@
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="542.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="win.Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="449.0" prefWidth="606.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="win.Controller">
   <children>
-    <RadioButton fx:id="rb1" layoutX="125.0" layoutY="18.0" mnemonicParsing="false" onAction="#HandleRadio" text="Push">
+    <ImageView fitHeight="462.0" fitWidth="642.0" layoutX="-11.0" layoutY="-10.0" opacity="0.76" pickOnBounds="true" preserveRatio="false">
+      <image>
+        <Image url="@../pictures/rasen.jpg" />
+      </image>
+    </ImageView>
+    <Rectangle fx:id="rec1" arcHeight="5.0" arcWidth="5.0" fill="#00cc52" height="98.0" layoutX="0.0" layoutY="205.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="606.0" />
+    <Rectangle fx:id="rec3" arcHeight="5.0" arcWidth="5.0" disable="true" fill="RED" height="77.0" layoutX="-37.0" layoutY="303.0" stroke="#ff3333" strokeType="INSIDE" visible="false" width="699.0" />
+    <RadioButton fx:id="rb1" layoutX="165.0" layoutY="58.0" mnemonicParsing="false" onAction="#HandleRadio" text="Push">
+      <font>
+        <Font name="System Bold" size="13.0" fx:id="x2" />
+      </font>
       <toggleGroup>
         <ToggleGroup fx:id="rb" />
       </toggleGroup>
     </RadioButton>
-    <RadioButton fx:id="rb2" layoutX="238.0" layoutY="18.0" mnemonicParsing="false" onAction="#HandleRadio" text="File" toggleGroup="$rb" />
-    <Label layoutX="14.0" layoutY="108.0" text="Path" />
-    <Label layoutX="14.0" layoutY="231.0" text="Time" />
-    <Slider fx:id="sl1" layoutX="125.0" layoutY="228.0" majorTickUnit="200.0" max="2000.0" minHeight="12.0" onDragDone="#SetProcess" onDragDropped="#SetProcess" prefHeight="12.0" prefWidth="90.0" showTickLabels="false" showTickMarks="false" value="1000.0" />
-    <Button fx:id="b4" layoutX="283.0" layoutY="337.0" mnemonicParsing="false" onAction="#CheckStartPopup" prefHeight="47.0" prefWidth="138.0" text="Start" />
-    <Label layoutX="14.0" layoutY="269.0" text="Opponent Name" />
-    <TextField fx:id="tf1" layoutX="125.0" layoutY="265.0" prefWidth="200.0" />
-    <Button fx:id="b3" layoutX="136.0" layoutY="337.0" mnemonicParsing="false" onAction="#Back" prefHeight="47.0" prefWidth="138.0" text="Back" />
-    <Button fx:id="file" layoutX="125.0" layoutY="106.0" mnemonicParsing="false" onAction="#File" prefWidth="68.0" text="File" />
-    <Label fx:id="pathlb" layoutX="223.0" layoutY="108.0" prefWidth="160.0" text="" />
-    <RadioButton fx:id="rb3" layoutX="125.0" layoutY="65.0" mnemonicParsing="false" onAction="#HandleRadioPlayer" text="Spieler X">
+    <RadioButton fx:id="rb2" font="$x2" layoutX="278.0" layoutY="58.0" mnemonicParsing="false" onAction="#HandleRadio" text="File" toggleGroup="$rb" />
+    <Label fx:id="pathlabel" disable="true" layoutX="14.0" layoutY="258.0" prefHeight="25.0" text="Dateipfad:" visible="false" />
+    <Button fx:id="b4" layoutX="294.0" layoutY="388.0" mnemonicParsing="false" onAction="#CheckStartPopup" prefHeight="25.0" prefWidth="138.0" text="Spiel Starten" />
+    <Label font="$x2" layoutX="14.0" layoutY="169.0" text="Gegnername:" />
+    <TextField fx:id="tf1" layoutX="165.0" layoutY="165.0" prefWidth="200.0" />
+    <Button fx:id="b3" layoutX="147.0" layoutY="389.0" minHeight="16.0" mnemonicParsing="false" onAction="#Back" prefHeight="25.0" prefWidth="138.0" text="Zurück" />
+    <Button fx:id="file" disable="true" layoutX="165.0" layoutY="260.0" mnemonicParsing="false" onAction="#File" prefWidth="109.0" text="Datei..." visible="false" />
+    <RadioButton fx:id="rb3" disable="false" font="$x2" layoutX="165.0" layoutY="115.0" mnemonicParsing="false" onAction="#HandleRadioPlayer" text="Spieler X">
       <toggleGroup>
         <ToggleGroup fx:id="player" />
       </toggleGroup>
     </RadioButton>
-    <RadioButton fx:id="rb4" layoutX="238.0" layoutY="65.0" mnemonicParsing="false" onAction="#HandleRadioPlayer" text="Spieler O" toggleGroup="$player" />
-    <TextField fx:id="tf2" layoutX="216.0" layoutY="223.0" prefWidth="109.0" />
-    <Label layoutX="14.0" layoutY="18.0" text="Typ" />
-    <Label layoutX="14.0" layoutY="65.0" text="Spieler" />
-    <Label layoutX="14.0" layoutY="153.0" text="Pusher Channel" />
-    <Label layoutX="14.0" layoutY="191.0" text="Pusher Event" />
-    <TextField layoutX="125.0" layoutY="150.0" prefWidth="200.0" />
-    <TextField layoutX="125.0" layoutY="188.0" prefWidth="200.0" />
+    <RadioButton fx:id="rb4" disable="false" font="$x2" layoutX="278.0" layoutY="115.0" mnemonicParsing="false" onAction="#HandleRadioPlayer" text="Spieler O" toggleGroup="$player" />
+    <Label font="$x2" layoutX="14.0" layoutY="58.0" text="Kommunikation:" />
+    <Label fx:id="playerlabel" disable="false" font="$x2" layoutX="14.0" layoutY="115.0" text="Spieler:" visible="true" />
+    <Label fx:id="channellabel" disable="true" font="$x2" layoutX="15.0" layoutY="215.0" text="App Key:" visible="false" />
+    <Label fx:id="eventlabel" disable="true" font="$x2" layoutX="15.0" layoutY="260.0" text="App Secret:" visible="false" />
+    <TextField fx:id="channelfield" disable="true" layoutX="166.0" layoutY="215.0" prefWidth="200.0" text="35f0106b1c135f0382da" visible="false" />
+    <TextField fx:id="eventfield" disable="true" layoutX="166.0" layoutY="260.0" prefWidth="200.0" text="f6bef52500e3c544a4d6" visible="false" />
+    <Label fx:id="oslabel" disable="true" layoutX="15.0" layoutY="215.0" text="Betriebssystem:" visible="false" />
+    <RadioButton fx:id="os1" disable="true" layoutX="168.0" layoutY="215.0" mnemonicParsing="false" onAction="#HandleRadioOS" text="Windows" visible="false">
+      <toggleGroup>
+        <ToggleGroup fx:id="os" />
+      </toggleGroup>
+    </RadioButton>
+    <RadioButton fx:id="os2" disable="true" layoutX="279.0" layoutY="215.0" mnemonicParsing="false" onAction="#HandleRadioOS" text="Linux" toggleGroup="$os" visible="false" />
+    <Text fx:id="rec2" layoutX="104.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a Game Mode">
+      <font>
+        <Font name="System Bold" size="30.0" />
+      </font>
+    </Text>
+    <Label fx:id="warnlabel" disable="false" font="$x2" layoutX="36.0" layoutY="316.0" prefWidth="398.0" text="" visible="true" />
+    <Label fx:id="pathlb" disable="false" layoutX="294.0" layoutY="263.0" prefWidth="160.0" text="" visible="false" />
+    <Label fx:id="w1" layoutX="405.0" layoutY="55.0" prefHeight="22.0" prefWidth="20.000099999997474" text="" />
+    <Label id="w1" fx:id="w2" layoutX="404.0" layoutY="92.0" prefHeight="35.33203125" prefWidth="35.0001220703125" text="" />
+    <Label id="w1" fx:id="w3" layoutX="405.0" layoutY="98.0" prefHeight="22.0" prefWidth="20.999900000002526" text="" />
+    <Label id="w1" fx:id="w4" layoutX="404.0" layoutY="112.0" prefHeight="36.0" prefWidth="35.0" text="" />
+    <Label id="w1" fx:id="w5" layoutX="415.0" layoutY="207.0" prefHeight="36.0" prefWidth="35.0" text="" />
+    <Label id="w1" fx:id="w6" layoutX="414.0" layoutY="248.0" prefHeight="36.0" prefWidth="35.0" text="" />
+    <Text layoutX="167.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielkonfiguration">
+      <font>
+        <Font size="30.0" fx:id="x1" />
+      </font>
+    </Text>
   </children>
 </AnchorPane>

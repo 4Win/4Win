@@ -16,6 +16,11 @@
           <children>
             <Pane layoutX="0.0" layoutY="1.0" prefHeight="405.0" prefWidth="598.9999000000025">
               <children>
+                <ImageView fitHeight="432.0" fitWidth="622.0" layoutX="-12.0" layoutY="-15.0" pickOnBounds="true" preserveRatio="false">
+                  <image>
+                    <Image url="@../pictures/stad2.jpg" />
+                  </image>
+                </ImageView>
                 <ImageView fitHeight="405.0" fitWidth="314.7954416849527" layoutX="337.0" layoutY="-29.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                     <Image url="pictures/Lionel-Messi8.png" />
@@ -26,13 +31,25 @@
                     <Image url="pictures/Ronaldo.png" />
                   </image>
                 </ImageView>
-                <Button fx:id="b1" layoutX="142.0" layoutY="257.0" mnemonicParsing="false" onAction="#StartPop" prefHeight="61.310546875" prefWidth="290.9998779296875" text="New Game" />
-                <Button fx:id="b2" layoutX="142.0" layoutY="330.0" mnemonicParsing="false" onAction="#LoadPop" prefHeight="61.310546875" prefWidth="290.9998779296875" text="Load Game" />
-                <Label layoutX="193.0" layoutY="105.0" text="4WIN" textFill="#4333ff">
+                <Button fx:id="b1" layoutX="193.0" layoutY="271.0" mnemonicParsing="false" onAction="#StartPop" prefHeight="26.310546875" prefWidth="214.0" text="Neues Spiel" />
+                <Button fx:id="b2" layoutX="193.0" layoutY="309.0" mnemonicParsing="false" onAction="#LoadPop" prefHeight="26.310546875" prefWidth="214.0" text="Spiel Laden" />
+                <Label layoutX="193.0" layoutY="8.0" text="4WIN" textFill="BLACK">
                   <font>
                     <Font name="System Bold" size="80.0" />
                   </font>
                 </Label>
+                <Button layoutX="193.0" layoutY="348.0" mnemonicParsing="false" onAction="#StatPop" prefHeight="26.310546875" prefWidth="214.0" text="Statistik" />
+                <Text fx:id="talk1" layoutX="182.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&quot;We will win!&quot;">
+                  <font>
+                    <Font name="Wingdings" size="25.0" />
+                  </font>
+                </Text>
+                <Text fx:id="talk2" layoutX="320.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="P. Wiemers" />
+                <Button fx:id="refreshtalk" layoutX="367.0" layoutY="165.0" mnemonicParsing="false" onAction="#refreshtalk" text="Quotes" textAlignment="CENTER">
+                  <font>
+                    <Font name="Apple Chancery" size="13.0" />
+                  </font>
+                </Button>
               </children>
             </Pane>
           </children>
