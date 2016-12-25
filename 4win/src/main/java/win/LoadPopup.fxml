@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="441.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="win.Controller">
+  <children>
+    <ImageView fitHeight="497.0" fitWidth="441.0" layoutX="0.0" layoutY="0.0" pickOnBounds="true" preserveRatio="false">
+      <image>
+        <Image url="@../pictures/ronaldofreekick.jpg" />
+      </image>
+    </ImageView>
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="503.9999000000025" layoutX="-10.0" layoutY="0.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" width="458.0" />
+    <Label layoutX="146.0" layoutY="235.0" prefHeight="57.0" prefWidth="183.0" text="Satz auswählen">
+      <font>
+        <Font name="System Bold" size="20.0" fx:id="x1" />
+      </font>
+    </Label>
+    <Label font="$x1" layoutX="143.0" layoutY="0.0" prefHeight="47.0" prefWidth="189.0" text="Spiel auswählen" />
+    <Button fx:id="b6" layoutX="308.0" layoutY="198.0" mnemonicParsing="false" onAction="#LoadGames" prefHeight="25.0" prefWidth="106.0" text="Spiele anzeigen" />
+    <Button fx:id="b7" layoutX="28.0" layoutY="198.0" mnemonicParsing="false" onAction="#buildSelected" prefHeight="25.0" prefWidth="106.0" text="Spiel laden" />
+    <TableView fx:id="tableview" layoutX="28.0" layoutY="53.0" prefHeight="134.0" prefWidth="386.0" />
+    <TableView fx:id="tableview2" layoutX="29.0" layoutY="299.0" prefHeight="121.0" prefWidth="386.0" />
+    <Button fx:id="bfieldset" layoutX="304.0" layoutY="452.0" mnemonicParsing="false" onAction="#ShowPlayedSet" text="Satz anzeigen" />
+    <Button fx:id="bloadback" layoutX="29.0" layoutY="453.0" mnemonicParsing="false" onAction="#Back5" prefWidth="105.0" text="Zurück" />
+  </children>
+</AnchorPane>
